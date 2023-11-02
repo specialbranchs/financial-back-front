@@ -1,0 +1,70 @@
+{% extends 'html/base/base.html' %}
+
+{% block title %}
+  FORM REPORT
+{% endblock %}
+{% block content %}
+  <div class="shadow-lg p-2">
+   
+    <form  >
+      {% csrf_token %}
+    
+      <section>
+
+
+        <div class="card-item-fs bg-light mt-2">
+          <div class="col">
+            <label for="podok" class="form-label col-form-label-sm">ক্যাটাগরি বাছাই</label>
+          </div>
+          <div class="col">
+            <select class="form-select" name="podok" id="podok">
+              <option selected value="">ক্যাটাগরি বাছাই করুন</option>
+               {% for podok in doronName %}
+               <option value="{{podok.title}}">{{podok.title}}</option>
+              {% endfor %}
+            </select>
+            
+          </div>
+        </div>
+        <div class="card-item-fs mt-2 bg-light">
+          <div class="col">
+            <label for="validationDefault01" class="form-label col-form-label-sm">শিরোনাম</label>
+          </div>
+          <div class="col">
+            <input type="text" class="form-control form-control-sm" id="title" name="title" value="" />
+          </div>
+        </div>
+
+        <div class="card-item-fs mt-2 bg-light"> 
+          <div class="col">
+            <label for="validationDefault01" class="form-label col-form-label-sm">রিপোর্ট</label>
+          </div>
+          <div class="col">
+            <textarea rows="10" type="text" class="form-control form-control-sm" placeholder="" id="body" name="body" ></textarea>
+          </div>
+        </div>
+  
+
+      <div class="card-item-fs bg-light mt-2">
+        <div class="col">
+          <label for="formFile" class="form-label col-form-label-sm">সংযুক্তি </label>
+        </div>
+        <div class="col">
+          <input id="fileInput" type="file"  />
+        </div>
+      </div>
+
+     
+      </section>
+      <div id="div-enabled" class="col mt-3">
+        <a onclick="uploadReport()" class="btn btn-primary roboto-condensed" type="submit">SAVE</a>
+      </div>
+      <div id="div-disabled" class="col mt-3 d-none">
+        <a  class="btn btn-primary roboto-condensed disabled" type="submit">
+          <i class="fa fa-spinner fa-spin"></i>
+          Uploading</a>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}

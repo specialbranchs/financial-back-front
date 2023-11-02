@@ -1,0 +1,30 @@
+{% extends 'html/base/base.html' %}
+{% load static %}
+{% block title %}
+  RULES
+{% endblock %}
+
+{% block content %}
+  <form class="shadow p-2">
+    {% csrf_token %}
+    <div class="row align-items-center mt-2">
+      <div class="col-auto">
+        {% comment %} <label class="sr-only col-form-label-sm" for="inlineFormInput">Name</label> {% endcomment %}
+        <input type="text" class="form-control mb-2" id="name" name="name" placeholder="KEY WORD" />
+      </div>
+
+      <div class="col-auto">
+        <a onclick="searchReportItem('Rules and laws')" class="btn btn-primary mb-2 shadow roboto-condensed btn-sm" type="submit">SEARCH</a>
+      </div>
+    </div>
+  </form>
+
+  <div >
+    <ul class="list-group" id="tableContent">
+    </ul>
+    
+    
+  </div>
+
+
+{% endblock %}

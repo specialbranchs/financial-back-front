@@ -1,0 +1,48 @@
+{% extends 'html/base/base.html' %}
+{% load static %}
+{% block title %}
+  পদক
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 shadow p-5">
+          <form method="post" action="">
+            {% csrf_token %}
+            <!-- Email input -->
+            {% if error %}
+              <div class="alert alert-danger">
+                <strong>{{ error }}!</strong>
+              </div>
+            {% endif %}
+            <div class="form-outline mb-4">
+              <label class="form-label roboto-condensed-300" for="form3Example3">পদকের নাম লিখুন</label>
+
+              <input type="text" class="form-control form-control-md" placeholder="পদক" id="title" name="title" value="{{ title }}" required/>
+            </div>
+
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button type="submit" class="btn btn-primary btn-sm roboto-condensed-300" style="padding-left: 2.5rem; padding-right: 2.5rem;">UPLOAD</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="mt-4">
+        <ul class="list-group">
+          <li class="list-group-item bg-primary">
+           পদকের নাম
+            
+          </li>
+          {% for athlete in podokArr %}
+            <li id="podok-{{athlete.id}}"  class="list-group-item d-flex justify-content-between align-items-center">{{ athlete.title }}
+
+              <span onclick="deletePodok('{{athlete.id}}')" class="badge badge-primary badge-pill bg-primary btn">delete</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+{% endblock %}

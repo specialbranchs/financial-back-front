@@ -1,0 +1,71 @@
+{% extends 'html/base/base.html' %}
+{% load static %}
+{% block title %}
+  SEARCH
+{% endblock %}
+
+{% block content %}
+  <form class="shadow p-2">
+    {% csrf_token %}
+    <div class="row align-items-center mt-2">
+      <div class="col-auto">
+        {% comment %} <label class="sr-only col-form-label-sm" for="inlineFormInput">Name</label> {% endcomment %}
+        <input type="text" class="form-control mb-2 form-control-sm" id="sname" name="sname" placeholder="নাম" />
+      </div>
+      <div class="col-auto">
+        {% comment %} <label class="sr-only col-form-label-sm" for="inlineFormInputGroup">fatherName</label> {% endcomment %}
+        <div class="input-group mb-2">
+          <input type="text" class="form-control form-control-sm" id="sfatherName" name="sfatherName" placeholder="বাবার নাম" />
+        </div>
+      </div>
+
+      <div class="col-auto">
+        {% comment %} <label class="sr-only col-form-label-sm" for="inlineFormInputGroup">NID</label> {% endcomment %}
+        <div class="input-group mb-2">
+          <input type="text" class="form-control form-control-sm" id="snid" name="snid" placeholder="এনআইডি" />
+        </div>
+      </div>
+      <div class="col-auto">
+        {% comment %} <label class="sr-only col-form-label-sm" for="inlineFormInputGroup">TIN NUMBER</label> {% endcomment %}
+        <div class="input-group mb-2">
+          <input type="text" class="form-control form-control-sm" id="stinNumber" name="stinNumber" placeholder="টিন নাম্বার" />
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <select class="form-select mb-2 form-control form-control-sm" name="spodok" id="spodok">
+          <option selected value="" class="">ক্যাটাগরি বাছাই করুন</option>
+          {% for podok in podokName %}
+            <option value="{{ podok.id }}">{{ podok.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row align-items-center mt-2">
+      <div class="col-auto">
+        {% comment %} <label class="sr-only col-form-label-sm" for="inlineFormInputGroup">TIN NUMBER</label> {% endcomment %}
+        <div class="input-group mb-2">
+          <input type="text" class="form-control form-control-sm" id="sstart" name="sstart" placeholder="start" onfocus="(this.type='date')" />
+        </div>
+      </div>
+
+      <div class="col-auto">
+        {% comment %} <label class="sr-only col-form-label-sm" for="inlineFormInputGroup">TIN NUMBER</label> {% endcomment %}
+        <div class="input-group mb-2">
+          <input type="text" class="form-control form-control-sm" id="send" name="send" placeholder="end" onfocus="(this.type='date')" />
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <a onclick="searchItem()" class="btn btn-primary mb-2 shadow roboto-condensed btn-sm" type="submit">SEARCH</a>
+      </div>
+    </div>
+  </form>
+
+  <div id="tableContent">
+    {% comment %} <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist"></div>
+    </nav>
+    <div class="tab-content shadow" id="nav-tabContent"></div> {% endcomment %}
+  </div>
+{% endblock %}

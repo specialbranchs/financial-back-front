@@ -1,0 +1,53 @@
+{% extends 'html/base/base.html' %}
+{% load static %}
+{% block title %}
+  ইউজার
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="shadow p-5">
+          <form method="post" action="">
+            {% csrf_token %}
+            <!-- Email input -->
+            {% if error %}
+              <div class="alert alert-danger">
+                <strong>{{ error }}!</strong>
+              </div>
+            {% endif %}
+            <div class="d-flex justify-content-between">
+                <div class="form-outline">
+                    <input type="text" class="form-control form-control-md" placeholder="নাম" id="name" name="name" value="{{ name }}" required />
+                  </div>
+              <div class="form-outline">
+                <input type="email" class="form-control form-control-md" placeholder="ইমেইল" id="email" name="email" value="{{ email }}" required />
+              </div>
+              <div class="form-outline">
+                <input type="password" class="form-control form-control-md" placeholder="পাসওয়ার্ড" id="password" name="password" value="{{ password }}" required />
+              </div>
+
+              <div class="text-center text-lg-start">
+                <button type="submit" class="btn btn-primary btn-sm roboto-condensed-300" style="padding-left: 2.5rem; padding-right: 2.5rem;">CREATE</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="mt-4">
+        <ul class="list-group">
+          <li class="list-group-item bg-primary bold">ইউজার এর তালিকা</li>
+          {% for user in userList %}
+            <li id="user-{{ user.id }}" class="list-group-item d-flex justify-content-between align-items-center">
+                <span  class="badge badge-primary badge-pill bg-primary roboto-condensed-300">{{user.name}}</span>
+              <span  class="badge badge-primary badge-pill bg-primary roboto-condensed-300">{{user.email}}</span>
+              <span  class="badge badge-primary badge-pill bg-primary roboto-condensed-300">user</span>
+              <span onclick="deleteUser('{{ user.id }}')" class="badge badge-primary badge-pill bg-danger btn roboto-condensed-300">delete</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+{% endblock %}
