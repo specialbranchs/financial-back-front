@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-#a!r3krzthnc#-o1g2f1#7*(_2p7m)o4qqtg4m)-z40v==ylt1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['fislam.pythonanywhere.com']
 
 
 # Application definition
@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'finance_root',
@@ -93,14 +93,14 @@ DATABASES = {
     #     'HOST':'localhost',
     #     'PORT':'3306'
     # }
-    #  'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'fislam$dbF',
-    #     'USER':'fislam',
-    #     'PASSWORD':'fislam_123064',
-    #     'HOST':'fislam.mysql.pythonanywhere-services.com',
-    #     'PORT':'3306'
-    # }
+     'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'fislam$dbF',
+        'USER':'fislam',
+        'PASSWORD':'fislam_123064',
+        'HOST':'fislam.mysql.pythonanywhere-services.com',
+        'PORT':'3306'
+    }
 }
 
 
