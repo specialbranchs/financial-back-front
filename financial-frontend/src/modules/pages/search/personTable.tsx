@@ -20,6 +20,8 @@ import EditPodokDetails from './editsearch/EditPodok';
 import EditPersonDetails from './editsearch/EditDetails';
 import { Designation } from '../../../../typings/structures';
 import { BACKEND_URL } from '../../../utils/config';
+import useChildDoronList from '../../../hooks/useChildDoron';
+import ChildScreen from './child';
 
 const sxStyle = {
     fontSize: 14,
@@ -44,7 +46,7 @@ export default function PersonTable({ personlist, podokList, reRender }: props) 
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
+    //    console.log('personlist',personlist)
     return (
         <>
             <TableContainer component={Paper}>
@@ -89,7 +91,7 @@ export default function PersonTable({ personlist, podokList, reRender }: props) 
                                                                 fontSize: 12,
                                                                 fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
                                                             }}
-                                                        >{item.podok?.title}{"["}{item.podokdate.slice(0, 10)}{"]\n"}</Typography>
+                                                        >{item.podok?.title}{"["}{item.podokdate.slice(0, 4)}{"]\n"}<ChildScreen id={item.podok.id} child={item.child} /></Typography>
                                                     ))
                                                 }
                                             </TableCell>
@@ -128,9 +130,9 @@ export default function PersonTable({ personlist, podokList, reRender }: props) 
                     </TableBody>
                 </Table>
             </TableContainer>
-          
+
             <TablePagination
-                rowsPerPageOptions={[5, 15, 100,500]}
+                rowsPerPageOptions={[5, 15, 100, 500]}
                 component="div"
                 count={personlist.length}
                 rowsPerPage={rowsPerPage}

@@ -10,9 +10,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { BACKEND_URL } from '../../../../utils/config';
 import { Button } from '@mui/joy';
+import ChildScreen from '../child';
 const sxStyle = {
     fontSize: 14,
     fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
+   
 }
 type props = {
     person: SearchInResponseData
@@ -85,6 +87,7 @@ const PersonDetails = ({ person }: props) => {
                                 <TableRow >
                                     <TableCell sx={{
                                         fontSize: 12,
+                                      
                                         fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
                                     }}>পদক</TableCell>
                                     <TableCell align="right">
@@ -95,7 +98,7 @@ const PersonDetails = ({ person }: props) => {
                                                         fontSize: 12,
                                                         fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
                                                     }}
-                                                >{item.podok?.title}{"["}{item.podokdate.slice(0, 10)}{"]\n"}</Typography>
+                                                >{item.podok?.title}{"["}{item.podokdate.slice(0, 4)}{"]"}<ChildScreen id={item.podok.id} child={item.child} /></Typography>
                                             ))
                                         }
                                     </TableCell>
@@ -110,7 +113,7 @@ const PersonDetails = ({ person }: props) => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={sxStyle}>মাতার নাম</TableCell>
-                                    <TableCell align="right" sx={sxStyle}>{person.motherName}</TableCell>
+                                    <TableCell align="right" sx={sxStyle}>{person.motherName} </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={sxStyle}>জাতীয় পরিচয়পত্র</TableCell>
@@ -123,7 +126,7 @@ const PersonDetails = ({ person }: props) => {
 
                                 <TableRow >
                                     <TableCell sx={sxStyle}>স্থায়ী ঠিকানা</TableCell>
-                                    <TableCell align="right" sx={sxStyle}>{person.personal[0].parmentAdd}</TableCell>
+                                    <TableCell align="right" sx={sxStyle}>{person.personal[0].parmentAdd} </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={sxStyle}>বর্তমান ঠিকানা</TableCell>
