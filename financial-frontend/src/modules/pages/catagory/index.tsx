@@ -104,7 +104,7 @@ const CatagoryScreen = () => {
             )
             .subscribe({
                 next: async (res) => {
-                    console.log('res', res)
+                    // console.log('res', res)
                     alert('added succefully')
                     settext('')
                     const podList = podokList

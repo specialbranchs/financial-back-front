@@ -34,7 +34,7 @@ const Register = (props: any) => {
     validationSchema,
     onSubmit: (values) => {
       setLoading(true);
-      console.log(values)
+      // console.log(values)
     },
   });
 

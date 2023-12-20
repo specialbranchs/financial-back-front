@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "financial-88578"
-  }
+    "default": "financial-88578",
+    "build": "financial-88578"
+  },
+  "targets": {},
+  "etags": {}
 }

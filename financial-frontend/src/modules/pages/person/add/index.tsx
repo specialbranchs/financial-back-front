@@ -87,7 +87,7 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
             )
             .subscribe({
                 next: async (res) => {
-                    console.log('user', res)
+                    // console.log('user', res)
                     setpersonData(PersonInitialData)
                     seterror('সফল ভাবে আপলোড হয়েছে')
                     setLoading(false)
@@ -136,7 +136,7 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
         )
         .subscribe({
             next: async (res) => {
-                console.log('user', res)
+                // console.log('user', res)
                // setpersonData(PersonInitialData)
                 reRender()
                 seterror('সফল ভাবে আপডেট হয়েছে')
@@ -148,7 +148,7 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
             }
         });
     }
-   console.log('data', personData)
+//    console.log('data', personData)
     return (
         <>
             <Toolbar sx={{ justifyContent: 'space-around' }}>

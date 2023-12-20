@@ -581,7 +581,7 @@ const uploadReport = () => {
     }
   })
     .then(res => {
-      console.log(res.data)
+   //   console.log(res.data)
       //  console.log(res.data.url)
       removeClass(divenabled, 'd-none')
       addClass(divdisabled, 'd-none')

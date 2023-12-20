@@ -21,7 +21,7 @@ const signInRequest$ = (data: SignInData): Observable<User> => client
   .pipe(
     map((response) => {
       const detail: any = jwtDecode(response.data.access)
-      console.log('any',detail)
+      // console.log('any',detail)
       const user: User = {
         id: detail.user_id,
         refresh: response.data.refresh,

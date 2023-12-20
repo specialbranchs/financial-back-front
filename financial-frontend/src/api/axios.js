@@ -15,13 +15,13 @@ axiosInstance.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${user?.access}`;
   }
 
-  console.log('Axios Request', config);
+  // console.log('Axios Request', config);
   return config;
 });
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log('Axios Response', response);
+    // console.log('Axios Response', response);
     return response;
   },
   (error) => {

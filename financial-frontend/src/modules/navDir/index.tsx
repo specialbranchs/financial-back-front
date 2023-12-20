@@ -16,7 +16,7 @@ import { User } from "../../../typings/structures";
 function NavMainScreen() {
   const dispatch = useDispatch()
   const { user } = useSelector((state: RootState) => state.currentUser)
- console.log('user', user)
+//  console.log('user', user)
 
   const refreshToken = () => {
     if (!user)

@@ -69,7 +69,7 @@ class Person(models.Model):
     motherName=models.CharField(max_length=255,null=True,blank=True)
     nid=models.CharField(max_length=255,null=True,blank=True)
     tinNumber=models.CharField(max_length=255,null=True,blank=True)
-    picture = models.ImageField(upload_to='pictures/%Y/%m/%d/', max_length=255, null=True, blank=True)
+    picture = models.ImageField(upload_to='pictures-upload/%Y/%m/%d/', max_length=255, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True,blank=True)
     
     def __str__(self):
@@ -176,7 +176,7 @@ class Report(models.Model):
  
 class ReportFile(models.Model):
      file=models.ForeignKey(Report,on_delete=models.CASCADE,related_name='user_report')
-     picture = models.FileField(upload_to='report/%Y/%m/%d/', max_length=255, null=True, blank=True)
+     picture = models.FileField(upload_to='report-upload/%Y/%m/%d/', max_length=255, null=True, blank=True)
      
      def __str__(self):
       return "{}".format(self.id)

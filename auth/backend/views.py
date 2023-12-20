@@ -100,6 +100,10 @@ class LogOutView(APIView):
 
 class PersionApiView(APIView):
     permission_classes = [IsAuthenticated]
+    def get(self,request):
+        persionList=Person.objects.all().order_by('-created')[:10]
+        serializer=PersonSerializerDepth(persionList,many=True)
+        return Response(serializer.data)
 
     def post(selt, request):
         name = request.data['name']
@@ -110,7 +114,7 @@ class PersionApiView(APIView):
         child=request.data['child']
         start = request.data['start']
         end = request.data['end']
-        print(child)
+        # print(child)
         uidG = str(uuid.uuid4())
         chek = 1
         if not name:
@@ -227,13 +231,14 @@ class getReportApiView(APIView):
 
         data = request.data['title']
         catagory = request.data['catagory']
-        uidG = str(uuid.uuid4())
+       
         if not data:
-            data = uidG
-        data = Report.objects.filter(Q(doron__contains=catagory) & (Q(title__contains=data)
+           Rdata = Report.objects.filter(Q(doron__contains=catagory)).order_by('-created')[:10]
+        else:
+            Rdata = Report.objects.filter(Q(doron__contains=catagory) & (Q(title__contains=data)
                                      | Q(body__contains=data)))
 
-        serializer = ReportSerializer(data, many=True)
+        serializer = ReportSerializer(Rdata, many=True)
 
         return Response(serializer.data)
 

@@ -2,8 +2,8 @@ import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardActions from '@mui/joy/CardActions';
-import Typography from '@mui/joy/Typography';
-
+// import Typography from '@mui/joy/Typography';
+import { Typography } from '@mui/material';
 import AirplayOutlinedIcon from '@mui/icons-material/AirplayOutlined';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import { ReportResponseData } from '../../../../api/report'
@@ -38,12 +38,15 @@ const ReportList = ({ report }: props): any => {
                             <CardContent>
                                 <Typography sx={{
                                     fontSize: 18,
-                                    color: '#0a355f',
+                                    color:'GrayText',
                                     fontWeight: 'bold',
+                                  
                                     fontFamily: ['Roboto Condensed', 'sans-serif'].join(",")
                                 }}>{item.title}</Typography>
-                                <Typography sx={{
+                                <Typography paragraph={false} sx={{
                                     fontSize: 14,
+                                    color:'GrayText',
+                                    padding:'2px',
                                     fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
                                     marginBottom: 2
                                 }}>{item.body.slice(0, 200)}</Typography>
@@ -63,7 +66,9 @@ const ReportList = ({ report }: props): any => {
                                                 <Typography sx={{
                                                     fontSize: 12,
                                                     fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
-                                                    textDecoration: 'underline'
+                                                    textDecoration: 'underline',
+                                                    color:'GrayText'
+                                                    
                                                 }}>
                                                     {value.picture.replace(/^.*(\\|\/|\:)/, '').slice(-60)}
                                                 </Typography>

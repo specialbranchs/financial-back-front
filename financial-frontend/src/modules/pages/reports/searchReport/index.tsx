@@ -27,7 +27,13 @@ const ReportScreen = ({ catagory }: props) => {
             ...item,
             catagory: catagory
         })
+
     }, [catagory])
+
+    useEffect(() => {
+        submit()
+    }, [item.catagory])
+
     const dataHandler = (e: { target: { value: any; id: any }; }) => {
         setItem({
             ...item,
@@ -36,8 +42,12 @@ const ReportScreen = ({ catagory }: props) => {
     }
 
     const submit = () => {
+
+        if(item.catagory==='')
+         return
+        
         setLoading(true)
-       
+      
         api.
             report.
             searchReportList$(item)
@@ -99,11 +109,11 @@ const ReportScreen = ({ catagory }: props) => {
                     height: '100%'
                 }}>
                     <CircularProgress />
-                    
+
                 </Toolbar>
             }
             {
-                report.length != 0 ?
+                report.length !== 0 ?
                     <ReportList report={report} /> : null
             }
 

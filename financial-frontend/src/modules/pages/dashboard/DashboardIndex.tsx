@@ -31,7 +31,7 @@ const DashboardIndex = (props: Props) => {
       )
       .subscribe({
         next: async (res) => {
-          console.log('user', res)
+          // console.log('user', res)
           setcount(res.totalpodok)
           setreport(res.data)
           setReportData(res.reportData)

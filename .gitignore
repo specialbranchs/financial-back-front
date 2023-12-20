@@ -1,8 +1,8 @@
 # Django #
 
 db.sqlite3
-pictures/
-report/
+pictures-upload/
+report-upload/
 .vscode/
 venv/
 

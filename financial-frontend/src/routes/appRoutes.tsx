@@ -22,6 +22,8 @@ import HomeboardPageLayout from '../modules/pages/dashboard/HomeboardPageLayout'
 import AdminScreen from '../modules/pages/admin';
 import { AccessUser } from '../utils/directUser';
 import SpecialReportScreen from '../modules/pages/reports/searchReport/special';
+import TrainingReportScreen from '../modules/pages/reports/searchReport/training';
+import ArchiveReportScreen from '../modules/pages/reports/searchReport/archive';
 
 const user=AccessUser()
 const appRoutes: RouteType[] = [
@@ -91,7 +93,7 @@ const appRoutes: RouteType[] = [
       
       {
         path: "/portal/training",
-        element: <ReportScreen catagory="Training"/>,
+        element: <TrainingReportScreen catagory="Training"/>,
         state: "portal.training",
         sidebarProps: {
           displayText: "Training"
@@ -109,7 +111,7 @@ const appRoutes: RouteType[] = [
   },
   {
     path: "/archive",
-    element: <ReportScreen catagory="Archive"/>,
+    element: <ArchiveReportScreen catagory="Archive"/>,
     state: "archive",
     sidebarProps: {
       displayText: "Archive",

@@ -1,5 +1,5 @@
 import { Box, FormControl, MenuItem, Select, Toolbar, SelectChangeEvent, InputLabel, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -21,7 +21,7 @@ type searchDataType = {
     tinNumber: string;
     nid: string;
     podok: number;
-    child:number;
+    child: number;
     podokpost: string;
     start: string | null;
     end: string | null;
@@ -35,20 +35,20 @@ const PersonScreen = () => {
     const [loading, setLoading] = useState(false);
     const [personList, setpersonList] = useState<SearchInResponseData[]>([])
     const { designations } = useDesignation()
-    
+
     const [searchData, setSearchData] = React.useState<searchDataType>({
         name: '',
         fatherName: '',
         tinNumber: '',
         podok: 0,
-        child:0,
+        child: 0,
         podokpost: '',
         nid: '',
         start: null,
         end: null
     })
-    const data=useChildDoronList(searchData.podok)
-    const childlist=data.designations
+    const data = useChildDoronList(searchData.podok)
+    const childlist = data.designations
 
     const selectChange = (e: SelectChangeEvent) => {
         setSearchData({
@@ -90,8 +90,38 @@ const PersonScreen = () => {
                 }
             });
     }
-    //console.log("podok list", designations)
-    // console.log(searchData)
+   
+
+    const personInitData = () => {
+        api.
+            search.
+            LoadInitPersonList$()
+            .pipe(
+                doOnSubscribe(() => setLoading(true)),
+                finalize(() => setLoading(false))
+            )
+            .subscribe({
+                next: async (person) => {
+                    // console.log('user',person)
+                    setpersonList(person)
+                    setLoading(false)
+                },
+                error: (error: any) => {
+                    // console.log(error)
+                    setLoading(false)
+                }
+            });
+    }
+    useEffect(() => {
+        personInitData()
+    }, [])
+    const refreshBtn=()=>{
+        if(searchData.name==='' && searchData.fatherName==='' && searchData.tinNumber==='' && searchData.podok===0 && searchData.child===0 && searchData.podokpost==='' && searchData.nid==='' && searchData.start===null && searchData.end===null){
+            personInitData()
+        }else{
+            submit()
+        }
+    }
     return (
         <>
             <Toolbar variant='dense' sx={{
@@ -247,7 +277,7 @@ const PersonScreen = () => {
                             Data not found
                         </Typography>
                     </Toolbar> :
-                    <PersonTable personlist={personList} podokList={designations} reRender={submit} />
+                    <PersonTable personlist={personList} podokList={designations} reRender={refreshBtn} />
             }
         </>
     )

@@ -58,7 +58,7 @@ const getDororList = (): Observable<Array<Designation>> => client.get<GetDesigna
 const getChildPodokList = (id: number): Observable<Array<Designation>> => client.post<GetDesignationListResponse>('child_podok', { id: id }).pipe(
   map((response) => {
     const responseData = response.data;
-    console.log("child response ", response)
+    // console.log("child response ", response)
     const designations: Array<Designation> = responseData.map((specializationData) => ({
       id: specializationData.id,
       title: specializationData.title

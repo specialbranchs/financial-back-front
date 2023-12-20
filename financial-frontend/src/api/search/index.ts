@@ -16,6 +16,16 @@ const searchPersonLis$ = (data: SearchDataItem): Observable<any> => client
     })
   );
 
+  const LoadInitPersonList$ = (): Observable<any> => client
+  .get<SearchInResponseData>('person')
+  .pipe(
+    map((response) => {
+      // console.log('res',response.data)
+      const data = response.data
+      return data;
+    })
+  );
+
 const addPerson$ = (data: PersonFormData): Observable<any> => client
   .post<any>('personAdd', makeFormData(data), {
     headers: { 'Content-Type': 'multipart/form-data' }
@@ -35,12 +45,12 @@ const updatePerson$ = (data: PersonFormData, personIds: any): Observable<any> =>
   .pipe(
     map(response => {
       const data = response.data
-      console.log('response', response)
+      // console.log('response', response)
       return data
     })
   )
 
-export default { searchPersonLis$, addPerson$, updatePerson$ }
+export default { searchPersonLis$, addPerson$, updatePerson$,LoadInitPersonList$ }
 
 
 

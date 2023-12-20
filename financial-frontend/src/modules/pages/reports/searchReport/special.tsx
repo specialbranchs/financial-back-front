@@ -19,15 +19,18 @@ const SpecialReportScreen = ({ catagory }: props) => {
     const [report, setReport] = useState<ReportResponseData>([])
     const [item, setItem] = useState<ReportSearch>({
         title: '',
-        catagory:''
+        catagory: ''
     })
 
-useEffect(()=>{
-    setItem({
-        ...item,
-        catagory:catagory
-    })
-},[catagory])
+    useEffect(() => {
+        setItem({
+            ...item,
+            catagory: catagory
+        })
+    }, [catagory])
+    useEffect(() => {
+        submit()
+    }, [item.catagory])
     const dataHandler = (e: { target: { value: any; id: any }; }) => {
         setItem({
             ...item,
@@ -36,6 +39,8 @@ useEffect(()=>{
     }
 
     const submit = () => {
+        if (item.catagory === '')
+            return
         setLoading(true)
         api.
             report.
@@ -46,7 +51,7 @@ useEffect(()=>{
             )
             .subscribe({
                 next: async (report) => {
-                   // console.log('user', report)
+                    // console.log('user', report)
                     setReport(report)
                     setLoading(false)
                 },
@@ -57,13 +62,13 @@ useEffect(()=>{
             });
     }
     //console.log("podok list", designations)
-  
+
     return (
         <>
             <Toolbar sx={{
                 flexWrap: 'wrap',
                 boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
-                backgroundColor:'white'
+                backgroundColor: 'white'
             }}>
                 <Box m={1}>
 
@@ -82,7 +87,7 @@ useEffect(()=>{
 
                 <LoadingButton
                     loading={loading}
-                   // loadingPosition="start"
+                    // loadingPosition="start"
                     color="primary"
                     variant="contained"
                     onClick={() => submit()}
@@ -98,12 +103,12 @@ useEffect(()=>{
                     height: '100%'
                 }}>
                     <CircularProgress />
-                    
+
                 </Toolbar>
             }
             {
-                report.length!=0 ?
-                <ReportList report={report}/>:null
+                report.length !== 0 ?
+                    <ReportList report={report} /> : null
             }
 
         </>

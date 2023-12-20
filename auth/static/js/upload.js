@@ -1487,9 +1487,9 @@ const uploadUpdate = (index) => {
   formData.append('personalId', data.personal[0]?.id)
   formData.append('politicalId', data.political[0]?.id)
   formData.append('professionalId', data.professional[0]?.id)
-  console.log(data.political)
+  // console.log(data.political)
   var csrfToken = document.cookie.split('=')[1]
-  console.log(csrfToken, formData.getAll('picture'))
+  // console.log(csrfToken, formData.getAll('picture'))
 
   axios.put(`${API_URL}/personAdd`, formData, {
     headers: {
@@ -1504,7 +1504,7 @@ const uploadUpdate = (index) => {
     }
   })
     .then(res => {
-      console.log(res.data)
+      // console.log(res.data)
       $('#exampleModalCenter').modal('toggle')
       delayManage()
 
