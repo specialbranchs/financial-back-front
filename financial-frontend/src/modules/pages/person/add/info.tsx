@@ -8,6 +8,10 @@ import InputProps from '../component/inputProps';
 import { FATHERNAME, MOTHERNAME, NAME, NC, NID, PODOK, TINNUMBER } from '../../../../utils/config';
 import { PersonFormData } from '../../../../../typings/formData';
 import ChildSelectProps from '../component/childSeclectProps';
+import { useEffect, useState } from 'react';
+import api from '../../../../api';
+import { doOnSubscribe } from '../../../../utils/rxjs.utils';
+import { finalize } from 'rxjs/operators';
 type Props = {
     TextAreaChange: any;
     InputChange: any;
@@ -16,9 +20,66 @@ type Props = {
     dateChange: any;
     data: PersonFormData,
     state: number;
-    childSelectChange:any
+    childSelectChange: any
+    setnidtin:any
 }
-const InfoScreen = ({childSelectChange, InputChange, SelectChange, fileChange, dateChange, data, state }: Props) => {
+const InfoScreen = ({ childSelectChange, InputChange, SelectChange, fileChange, dateChange, data, state,setnidtin }: Props) => {
+    const [tinerr, settinerr] = useState(false)
+    const [niderr, setniderr] = useState(false)
+    useEffect(() => {
+        if (data.nid)
+            nidExist()
+    }, [data.nid])
+
+    useEffect(() => {
+        if (data.tinNumber)
+            tinExist()
+    }, [data.tinNumber])
+
+    const tinExist = () => {
+        api.search
+            .existTin(data.tinNumber)
+            .pipe(
+                doOnSubscribe(() => { }),
+                finalize(() => { })
+            )
+            .subscribe({
+                next: async (res) => {
+                    console.log('user', res)
+                    settinerr(res.tin)
+                    setnidtin({
+                        nid:niderr,
+                        tin:res.tin
+                    })
+
+                },
+                error: (error: any) => {
+                    // console.log(error)
+                }
+            });
+    }
+    const nidExist = () => {
+        api.search
+            .existNid(data.nid)
+            .pipe(
+                doOnSubscribe(() => { }),
+                finalize(() => { })
+            )
+            .subscribe({
+                next: async (res) => {
+                    console.log('user', res)
+                    setniderr(res.nid)
+                    setnidtin({
+                        tin:tinerr,
+                        nid:res.nid
+                    })
+
+                },
+                error: (error: any) => {
+                    // console.log(error)
+                }
+            });
+    }
     return (
         <>
 
@@ -114,7 +175,7 @@ const InfoScreen = ({childSelectChange, InputChange, SelectChange, fileChange, d
                         placeholder={NC.nid}
                         label={NC.nid}
                         InputChange={InputChange}
-                        error={false}
+                        error={niderr && state===1}
                         value={data.nid}
                     />
                 </Grid>
@@ -124,7 +185,7 @@ const InfoScreen = ({childSelectChange, InputChange, SelectChange, fileChange, d
                         placeholder={NC.tinNumber}
                         label={NC.tinNumber}
                         InputChange={InputChange}
-                        error={false}
+                        error={tinerr  && state===1}
                         value={data.tinNumber}
                     />
                 </Grid>

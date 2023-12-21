@@ -16,7 +16,7 @@ const searchPersonLis$ = (data: SearchDataItem): Observable<any> => client
     })
   );
 
-  const LoadInitPersonList$ = (): Observable<any> => client
+const LoadInitPersonList$ = (): Observable<any> => client
   .get<SearchInResponseData>('person')
   .pipe(
     map((response) => {
@@ -50,7 +50,30 @@ const updatePerson$ = (data: PersonFormData, personIds: any): Observable<any> =>
     })
   )
 
-export default { searchPersonLis$, addPerson$, updatePerson$,LoadInitPersonList$ }
+const existTin = (tin: string): Observable<any> => client
+  .post<any>('tin', {
+    tinNumber: tin
+  })
+  .pipe(
+    map((response) => {
+      // console.log('res',response.data)
+      const data = response.data
+      return data;
+    })
+  );
+
+const existNid = (nid: string): Observable<any> => client
+  .post<any>('nid', {
+    nid: nid
+  })
+  .pipe(
+    map((response) => {
+      // console.log('res',response.data)
+      const data = response.data
+      return data;
+    })
+  );
+export default { searchPersonLis$, addPerson$, updatePerson$, LoadInitPersonList$, existNid, existTin }
 
 
 

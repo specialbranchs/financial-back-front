@@ -3,15 +3,16 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import FormHelperText from '@mui/joy/FormHelperText';
 import Input from '@mui/joy/Input';
-type Props={
-    id:string;
-    placeholder:string;
-    InputChange:any;
-    error:boolean;
-    label:string;
-    value:string;
+type Props = {
+    id: string;
+    placeholder: string;
+    InputChange: any;
+    error: boolean;
+    label: string;
+    value: string;
+    
 }
-const InputProps = ({id,placeholder,InputChange,error,label,value}:Props) => {
+const InputProps = ({ id, placeholder, InputChange, error, label, value }: Props) => {
     return (
         <FormControl
             id={id}
@@ -21,7 +22,7 @@ const InputProps = ({id,placeholder,InputChange,error,label,value}:Props) => {
                 {label}
             </FormLabel>
             <Input
-               id={id}
+                id={id}
                 placeholder={placeholder}
                 type="text"
                 autoComplete="on"
@@ -30,9 +31,12 @@ const InputProps = ({id,placeholder,InputChange,error,label,value}:Props) => {
                 error={error}
                 onChange={InputChange}
                 variant="outlined" />
-            {/* <FormHelperText>
-                Help!
-            </FormHelperText> */}
+            {
+                error &&
+                <FormHelperText sx={{color:'red'}} >
+                    Already exists
+                </FormHelperText>
+            }
         </FormControl>
     )
 }

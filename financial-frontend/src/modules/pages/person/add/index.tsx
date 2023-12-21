@@ -30,12 +30,14 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
     const [show, setShow] = React.useState<ShowDataType[]>(showData)
     const [count, setcount] = useState(1)
     const [personData, setpersonData] = useState<PersonFormData>(keyData)
+    const [nidtin,setnidtin]=useState({nid:false,tin:false})
     const selectChange = (e: any, newValue: number) => {
         //console.log(e, newValue)
         setpersonData({
             ...personData,
             podok: newValue
         })
+        seterror('')
     };
     const childSelectChange = (e: any, newValue: number) => {
        // console.log(e, newValue)
@@ -43,13 +45,14 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
             ...personData,
             child: newValue
         })
+        seterror('')
     };
     const dataHandler = (e: { target: { value: any; id: any }; }) => {
         setpersonData({
             ...personData,
             [e.target.id]: e.target.value
         })
-       // console.log(e.target.value, e.target.id)
+        seterror('')
     }
     const dateChange = (newValue: Dayjs | null) => {
       //  console.log(newValue)
@@ -59,6 +62,7 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
                 podokdate: new Date(newValue.add(1, 'day').toDate()).toISOString().slice(0, 10)
             })
         }
+        seterror('')
     }
     const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -75,11 +79,15 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
             seterror('ক্যাটাগরি বাছাই করুন')
             return
         }
-        // if (personData.child === 0) {
-        //     seterror('উপ-ক্যাটাগরি বাছাই করুন')
-        //     return
-        // }
-        // setpersonData(PersonInitialData)
+        if (nidtin.nid === true) {
+            seterror('অন্য এনআইডি বাছাই করুন')
+            return
+        }
+        if (nidtin.tin === true) {
+            seterror('অন্য টিন বাছাই করুন')
+            return
+        }
+       
         api.search.addPerson$(personData)
             .pipe(
                 doOnSubscribe(() => setLoading(true)),
@@ -175,6 +183,7 @@ const AddPerson = ({ state, keyData,updateIds ,reRender}: Props) => {
                         data={personData}
                         state={state}
                         childSelectChange={childSelectChange}
+                        setnidtin={setnidtin}
 
                     />
 

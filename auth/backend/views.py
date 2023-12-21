@@ -380,6 +380,22 @@ class GenerateReportApiView(APIView):
     
         return Response(data)
     
+class ExistsNidApiView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        nid=request.data['nid']
+        nidBool=Person.objects.filter(nid=nid).exists()
+        return Response({'nid':nidBool})
+           
     
+ 
+class ExistsTinApiView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        tin=request.data['tinNumber']
+        tinBool=Person.objects.filter(tinNumber=tin).exists()
+        return Response({'tin':tinBool})
+           
+        
     
     
