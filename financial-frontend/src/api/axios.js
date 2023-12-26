@@ -10,19 +10,20 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
    const { currentUser } = store.getState()
    const {user}=currentUser
-   console.log('user',user)
+  //  console.log('user',user)
 
   if (user) {
     config.headers.Authorization = `Bearer ${user?.access}`;
+    
   }
 
-  console.log('Axios Request', config);
+  // console.log('Axios Request', config);
   return config;
 });
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log('Axios Response', response);
+    // console.log('Axios Response', response);
     return response;
   },
   (error) => {
