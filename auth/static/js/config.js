@@ -1,7 +1,8 @@
 
-const URL='http://127.0.0.1:8000'
+const URL=''
 const API_URL=`${URL}/api`
 const PODOK="podok"
+const PODOKDATE='podokdate'
 const NAME="name"
 const FATHERNAME="fatherName"
 const MOTHERNAME="motherName"
@@ -41,6 +42,7 @@ const EVALUATION="evaluation"
 
 const df={
   "podok":"পদক",
+  "podokdate":'পদক গ্রহণের সাল',
   "name":"নাম/ডাক নাম",
   "fatherName":"পিতার নাম",
   "motherName":"মাতার নাম",
