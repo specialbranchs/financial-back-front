@@ -5,7 +5,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'build')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -17,7 +17,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['fislam.pythonanywhere.com']
 
-ALLOWED_HOSTS = ['fims.specialbranch.gov.bd']
+ALLOWED_HOSTS = ['fims.specialbranch.gov.bd','localhost','127.0.0.1','118.179.167.195']
 # Application definition
 
 INSTALLED_APPS = [
@@ -81,18 +81,18 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'finance_root',
-        'USER':'root',
-        'PASSWORD':'sb@db#$2024',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'finance_root',
+    #     'USER':'root',
+    #     'PASSWORD':'sb@db#$2024',
+    #     'HOST':'127.0.0.1',
+    #     'PORT':'3306'
+    # }
     #  'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'fislam$dbF',
@@ -138,14 +138,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'  #ok
 
 MEDIA_URL = '/images/'
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static')
-# ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'build', 'static')
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') #ok
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
 # Default primary key field type
