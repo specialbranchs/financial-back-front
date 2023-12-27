@@ -37,7 +37,7 @@ const MakeForm = (podok: PodokType) => {
 const setDesignations = (podok: PodokType): Observable<Array<any>> => client.post<any>('podokAdd', MakeForm(podok)).pipe(
   map((response) => {
     const responseData = response.data;
-    console.log("response ", responseData)
+    // console.log("response ", responseData)
 
     return responseData;
   })

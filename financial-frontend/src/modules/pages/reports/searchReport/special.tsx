@@ -51,7 +51,7 @@ const SpecialReportScreen = ({ catagory }: props) => {
             )
             .subscribe({
                 next: async (report) => {
-                    // console.log('user', report)
+                    console.log('special', report)
                     setReport(report)
                     setLoading(false)
                 },

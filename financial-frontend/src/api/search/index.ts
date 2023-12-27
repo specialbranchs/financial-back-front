@@ -33,7 +33,7 @@ const addPerson$ = (data: PersonFormData): Observable<any> => client
   .pipe(
     map(response => {
       const data = response.data
-      console.log('response', response)
+      // console.log('response', response)
       return data
     })
   )

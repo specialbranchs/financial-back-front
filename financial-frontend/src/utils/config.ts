@@ -1,5 +1,6 @@
 export const BACKEND_URL='https://fims.specialbranch.gov.bd'
 export const BACKEND_BASE=`${BACKEND_URL}/api`
+// !process.env.NODE_ENV || process.env.NODE_ENV === 'development'?'http://127.0.0.1:8000':
 export const PASSWORD_MIN_LENGTH=6
 
 

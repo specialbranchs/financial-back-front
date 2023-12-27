@@ -45,7 +45,7 @@ const InfoScreen = ({ childSelectChange, InputChange, SelectChange, fileChange, 
             )
             .subscribe({
                 next: async (res) => {
-                    console.log('user', res)
+                    // console.log('user', res)
                     settinerr(res.tin)
                     setnidtin({
                         nid:niderr,

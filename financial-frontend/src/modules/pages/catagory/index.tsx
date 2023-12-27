@@ -73,7 +73,7 @@ const CatagoryScreen = () => {
             )
             .subscribe({
                 next: async (res) => {
-                    console.log('res', res)
+                    // console.log('res', res)
 
                     if (res.del) {
                         let newPdkList = podokList.filter(item => item.id !== res.id)

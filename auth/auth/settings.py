@@ -13,7 +13,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'build')
 SECRET_KEY = 'django-insecure-#a!r3krzthnc#-o1g2f1#7*(_2p7m)o4qqtg4m)-z40v==ylt1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['fislam.pythonanywhere.com']
 
@@ -81,18 +81,18 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'finance_root',
-        'USER':'root',
-        'PASSWORD':'sb@db#$2024',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'finance_root',
+    #     'USER':'root',
+    #     'PASSWORD':'sb@db#$2024',
+    #     'HOST':'127.0.0.1',
+    #     'PORT':'3306'
+    # }
     #  'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'fislam$dbF',
