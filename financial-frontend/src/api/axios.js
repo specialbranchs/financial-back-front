@@ -5,6 +5,7 @@ import { store } from '../state';
 
 const axiosInstance = axios.create({
   baseURL: BACKEND_BASE,
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use((config) => {
