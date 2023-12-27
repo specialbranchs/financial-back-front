@@ -2,12 +2,11 @@
 import { store } from "../state"
 
 
-export const handle=()=>{
-   
-      const {currentUser}= store.getState()
-      
+export const handle = () => {
 
-     return currentUser
+      const { currentUser } = store.getState()
+      const { user } = currentUser
+      return user
 }
 
 

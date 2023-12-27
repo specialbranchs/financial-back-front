@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useDoronList from '../../../../hooks/useDoron'
 import { ReportDataItem } from '../../../../../typings/formData'
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar, Typography } from '@mui/material'
@@ -9,6 +9,9 @@ import { LoadingButton } from '@mui/lab';
 import api from '../../../../api';
 import { doOnSubscribe } from '../../../../utils/rxjs.utils';
 import { finalize } from 'rxjs/operators';
+import axios from 'axios';
+import { store } from '../../../../state';
+import { handle } from '../../../../utils/handle';
 const primry = {
     doron: 'ধরণ বাছাই করুন',
     title: '',
@@ -99,165 +102,184 @@ const AddReportScreen = () => {
             });
     }
     // console.log(reportData)
+    useEffect(() => {
+        onlyaxios()
+    }, [])
+
+    const onlyaxios = () => {
+        const user = handle()
+        console.log('user',user)
+        axios.get('https://fims.specialbranch.gov.bd/api/doron_get', {
+            headers: {
+                'Authorization': 'Bearer ' + user?.access
+            }
+        })
+            .then(response => {
+                console.log('response doron', response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     return (
-        
-            <Grid container spacing={2} sx={{
-                boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
-                padding:2
-            }}>
-                <Grid item xs={12}>
-                    
-                        <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography>
-                                ক্যাটাগরি বাছাই
-                            </Typography>
-                            <FormControl >
 
-                                <Select
+        <Grid container spacing={2} sx={{
+            boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
+            padding: 2
+        }}>
+            <Grid item xs={12}>
 
-                                    id="doron"
-                                    value={reportData?.doron + ''}
-                                    label=""
-                                    sx={{
-                                        width: 380,
-                                        height: 30,
-                                        fontSize: 14,
-                                        backgroundColor: 'white'
-                                    }}
-                                    onChange={selectChange}
+                <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography>
+                        ক্যাটাগরি বাছাই
+                    </Typography>
+                    <FormControl >
 
-                                >{
-                                        designations.map(value => (
-                                            <MenuItem value={value.title}>{value.title}</MenuItem>
-                                        ))
-                                    }
+                        <Select
 
-                                </Select>
-                            </FormControl>
+                            id="doron"
+                            value={reportData?.doron + ''}
+                            label=""
+                            sx={{
+                                width: 380,
+                                height: 30,
+                                fontSize: 14,
+                                backgroundColor: 'white'
+                            }}
+                            onChange={selectChange}
 
-                        </Toolbar>
-                    
+                        >{
+                                designations.map(value => (
+                                    <MenuItem value={value.title}>{value.title}</MenuItem>
+                                ))
+                            }
 
-                </Grid>
-                <Grid item xs={12}>
-                    
-                        <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography>
-                                শিরোনাম
-                            </Typography>
-                            <FormControl variant="standard" >
-                                <BootstrapInput
-                                    placeholder='শিরোনাম'
-                                    sx={{
-                                        input: {
+                        </Select>
+                    </FormControl>
 
-                                            "&::placeholder": {    // <----- Add this.
-                                                opacity: .7,
-                                            },
-                                        },
+                </Toolbar>
 
-                                    }}
-                                    value={reportData.title}
-                                    onChange={dataHandler}
-                                    id="title" />
-                            </FormControl>
-
-
-                        </Toolbar>
-                    
-                </Grid>
-                <Grid item xs={12}>
-                    <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography>
-                            রিপোর্ট
-                        </Typography>
-
-                        <StyledTextarea
-                            aria-label="minimum height"
-                            minRows={3}
-                            maxRows={7}
-                            id="body"
-                            value={reportData.body}
-                            onChange={dataHandler}
-                            placeholder=" রিপোর্ট"
-
-                        />
-                    </Toolbar>
-                    
-                </Grid>
-                <Grid item xs={12}>
-                    
-                        <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography>
-                                সংযুক্তি
-                            </Typography>
-                            <Button
-                                component="label"
-                                variant="contained"
-                                startIcon={<CloudUploadIcon />}
-                                href="#file-upload"
-                            >
-                                Upload files
-                                <VisuallyHiddenInput type="file" onChange={fileChange} multiple />
-                            </Button>
-
-                        </Toolbar>
-                    
-                </Grid>
-                {
-
-                    reportData.picture.map(value => (
-                        <Grid item xs={12}>
-                            <Toolbar
-                                sx={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    borderBottom: 1,
-                                    borderColor: 'grayText'
-
-                                }}>
-                                <Box>
-                                    <Typography>
-                                        {value.name}
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Button onClick={() => DelFile(value.name)}>
-                                        <DeleteOutlineIcon sx={{ color: 'red' }} />
-                                    </Button>
-                                </Box>
-                            </Toolbar>
-                        </Grid>
-                    ))
-                }
-                <Grid item xs={12}>
-                    <Toolbar
-                        sx={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-
-                        }}>
-                        <LoadingButton
-                            loading={loading}
-                            loadingPosition="start"
-                            color="secondary"
-                            variant="contained"
-                            onClick={() => Submit()}
-                        >
-                            SUBMIT REPORT
-                        </LoadingButton>
-                        <Typography color={'red'}>
-                            {error}
-                        </Typography>
-
-                    </Toolbar>
-                </Grid>
 
             </Grid>
+            <Grid item xs={12}>
+
+                <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography>
+                        শিরোনাম
+                    </Typography>
+                    <FormControl variant="standard" >
+                        <BootstrapInput
+                            placeholder='শিরোনাম'
+                            sx={{
+                                input: {
+
+                                    "&::placeholder": {    // <----- Add this.
+                                        opacity: .7,
+                                    },
+                                },
+
+                            }}
+                            value={reportData.title}
+                            onChange={dataHandler}
+                            id="title" />
+                    </FormControl>
 
 
-        
+                </Toolbar>
+
+            </Grid>
+            <Grid item xs={12}>
+                <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography>
+                        রিপোর্ট
+                    </Typography>
+
+                    <StyledTextarea
+                        aria-label="minimum height"
+                        minRows={3}
+                        maxRows={7}
+                        id="body"
+                        value={reportData.body}
+                        onChange={dataHandler}
+                        placeholder=" রিপোর্ট"
+
+                    />
+                </Toolbar>
+
+            </Grid>
+            <Grid item xs={12}>
+
+                <Toolbar variant='dense' sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography>
+                        সংযুক্তি
+                    </Typography>
+                    <Button
+                        component="label"
+                        variant="contained"
+                        startIcon={<CloudUploadIcon />}
+                        href="#file-upload"
+                    >
+                        Upload files
+                        <VisuallyHiddenInput type="file" onChange={fileChange} multiple />
+                    </Button>
+
+                </Toolbar>
+
+            </Grid>
+            {
+
+                reportData.picture.map(value => (
+                    <Grid item xs={12}>
+                        <Toolbar
+                            sx={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                borderBottom: 1,
+                                borderColor: 'grayText'
+
+                            }}>
+                            <Box>
+                                <Typography>
+                                    {value.name}
+                                </Typography>
+                            </Box>
+                            <Box>
+                                <Button onClick={() => DelFile(value.name)}>
+                                    <DeleteOutlineIcon sx={{ color: 'red' }} />
+                                </Button>
+                            </Box>
+                        </Toolbar>
+                    </Grid>
+                ))
+            }
+            <Grid item xs={12}>
+                <Toolbar
+                    sx={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+
+                    }}>
+                    <LoadingButton
+                        loading={loading}
+                        loadingPosition="start"
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => Submit()}
+                    >
+                        SUBMIT REPORT
+                    </LoadingButton>
+                    <Typography color={'red'}>
+                        {error}
+                    </Typography>
+
+                </Toolbar>
+            </Grid>
+
+        </Grid>
+
+
+
 
 
     )

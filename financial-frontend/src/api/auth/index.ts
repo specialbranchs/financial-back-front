@@ -57,6 +57,7 @@ const TokenRefresh$ = (data: User|null): Observable<any> => client
   .pipe(
     map((response) => {
       const data = response.data
+      console.log('refresh',data)
       return data
     })
   );
