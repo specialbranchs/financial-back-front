@@ -1,3 +1,4 @@
+import os
 from django.core import serializers
 from django.http import JsonResponse
 import json
@@ -17,7 +18,7 @@ from .serializerperson import ChildPodokNameSerializer, DoronNameSerializer, Per
 
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .models import PodokChildName, CustomUser as User, Person, Report, PodokName, Person_Podok, DohoronName
+from .models import PodokChildName, CustomUser as User, Person, Report, PodokName, Person_Podok, DohoronName, ReportFile
 import jwt
 import datetime
 from django.db.models import Q
@@ -396,6 +397,31 @@ class ExistsTinApiView(APIView):
         tinBool=Person.objects.filter(tinNumber=tin).exists()
         return Response({'tin':tinBool})
            
+
+
+from wsgiref.util import FileWrapper
+import mimetypes
+from django.http import HttpResponse, Http404,StreamingHttpResponse
+BASE_DIR= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+class DownloadFileApiView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        pk=request.data['id']
+        report=ReportFile.objects.get(pk=pk)
+    
+        url=str(report.picture)
+        fl_path =os.path.join(BASE_DIR,url)
+        filename = os.path.basename(fl_path)
+        fl = open(fl_path, 'rb')
+        mime_type, _ = mimetypes.guess_type(fl_path)
+        chunk_size=8192
+    # response = HttpResponse(fl, content_type=mime_type)
+        response=StreamingHttpResponse(FileWrapper(fl,chunk_size),
+                                   content_type=mime_type)
+        response['Content-Length']=os.path.getsize(fl_path)
+        response['Content-Disposition'] = "Attachment; filename=%s" % filename
+        return response
+                   
         
     
     

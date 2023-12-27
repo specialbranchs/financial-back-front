@@ -38,10 +38,10 @@ const delCatagory$ = (id: number): Observable<CatagoryResponseData> => client
     );
 
 
-    const addSubCatagory$ = (id: number,title:string): Observable<any> => client
+const addSubCatagory$ = (id: number, title: string): Observable<any> => client
     .post<any>('add_subcatagory', {
         id: id,
-        title:title
+        title: title
     })
     .pipe(
         map((response) => {
@@ -51,6 +51,17 @@ const delCatagory$ = (id: number): Observable<CatagoryResponseData> => client
             return responseData;
         })
     );
-export default { setCatagory$, delCatagory$,addSubCatagory$ }
+const downloadFile = (url:string): Observable<any> => client
+    .get<any>(url,{
+        responseType:'arraybuffer'
+    })
+    .pipe(
+        map((response) => {
+            // console.log('res', response.data)
+            const responseData = response.data
+            return responseData;
+        })
+    );
+export default { setCatagory$, delCatagory$, addSubCatagory$, downloadFile }
 
 

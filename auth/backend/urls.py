@@ -24,6 +24,7 @@ urlpatterns = [
     path('add_subcatagory',AddSubCatagoryApiView.as_view()),
     path('nid',ExistsNidApiView.as_view()),
     path('tin',ExistsTinApiView.as_view()),
+    path('download',DownloadFileApiView.as_view()),
     
     
     

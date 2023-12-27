@@ -13,6 +13,9 @@ import React, { useState } from 'react';
 import { BACKEND_URL } from '../../../../utils/config';
 import TextAreaPropsForReport from './TextAreaForList';
 import FileViewerScreen from '../../../../components/file-viewer';
+import api from '../../../../api';
+import { doOnSubscribe } from '../../../../utils/rxjs.utils';
+import { finalize } from 'rxjs/operators';
 type props = {
     report: ReportResponseData
 }
@@ -26,11 +29,32 @@ const ReportList = ({ report }: props): any => {
     const handleOpen = () => setmodalfull(true);
     const handleClose = () => setmodalfull(false);
     const [modalItem, setModalItem] = React.useState({ title: '', body: '' })
-    const ShowFile = () => {
 
+    const download = (url: string) => {
+        const type=url.split('.').pop()
+        var filename = url.replace(/^.*[\\/]/, '')
+        api.catagory
+            .downloadFile(BACKEND_URL+url)
+            .pipe(
+                doOnSubscribe(() => { }),
+                finalize(() => { })
+            )
+            .subscribe({
+                next: async (file) => {
+                    const url=window.URL.createObjectURL(new Blob([file]))
+                    const link=document.createElement('a')
+                    link.href=url
+                    link.setAttribute('download',filename)
+                    document.body.appendChild(link)
+                    link.click()
 
+                },
+                error: (error: any) => {
+                    // console.log(error)
+
+                }
+            });
     }
-    console.log(fileStatus)
     return (
         <>
             {
@@ -40,15 +64,15 @@ const ReportList = ({ report }: props): any => {
                             <CardContent>
                                 <Typography sx={{
                                     fontSize: 18,
-                                    color:'GrayText',
+                                    color: 'GrayText',
                                     fontWeight: 'bold',
-                                  
+
                                     fontFamily: ['Roboto Condensed', 'sans-serif'].join(",")
                                 }}>{item.title}</Typography>
                                 <Typography paragraph={false} sx={{
                                     fontSize: 14,
-                                    color:'GrayText',
-                                    padding:'2px',
+                                    color: 'GrayText',
+                                    padding: '2px',
                                     fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
                                     marginBottom: 2
                                 }}>{item.body.slice(0, 200)}</Typography>
@@ -69,8 +93,8 @@ const ReportList = ({ report }: props): any => {
                                                     fontSize: 12,
                                                     fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
                                                     textDecoration: 'underline',
-                                                    color:'GrayText'
-                                                    
+                                                    color: 'GrayText'
+
                                                 }}>
                                                     {value.picture.replace(/^.*(\\|\/|\:)/, '').slice(-60)}
                                                 </Typography>
@@ -86,7 +110,9 @@ const ReportList = ({ report }: props): any => {
                                                     <AirplayOutlinedIcon color='error' />
                                                 </Button>
 
-                                                <a href={`${BACKEND_URL}/image/download/${value.id}`} target="_blank" rel="noreferrer">
+                                                <a onClick={() => {
+                                                    download(value.picture)
+                                                }} target="_blank" rel="noreferrer">
                                                     <Button size='sm' sx={{ marginLeft: 5 }} variant="soft">
                                                         <DownloadOutlinedIcon sx={{ color: 'red' }} />
                                                     </Button>
