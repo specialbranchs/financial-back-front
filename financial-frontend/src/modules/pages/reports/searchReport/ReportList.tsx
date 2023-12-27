@@ -28,7 +28,9 @@ const ReportList = ({ report }: props): any => {
     const [modalItem, setModalItem] = React.useState({ title: '', body: '' })
     const ShowFile = () => {
 
+
     }
+    console.log(fileStatus)
     return (
         <>
             {
@@ -77,7 +79,7 @@ const ReportList = ({ report }: props): any => {
                                                 <Button onClick={() => {
                                                     setFileshow(true)
                                                     setfileStatus({
-                                                        file: BACKEND_URL + "/" + value.picture,
+                                                        file: BACKEND_URL + value.picture,
                                                         type: value.picture.split('.').pop()
                                                     })
                                                 }} size='sm' variant="soft" >
