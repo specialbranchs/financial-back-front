@@ -1,5 +1,5 @@
-export const BACKEND_URL='http://118.179.167.195'
-export const BACKEND_BASE=`/api`
+export const BACKEND_URL='https://fims.specialbranch.gov.bd'
+export const BACKEND_BASE=`${BACKEND_URL}/api`
 export const PASSWORD_MIN_LENGTH=6
 
 
