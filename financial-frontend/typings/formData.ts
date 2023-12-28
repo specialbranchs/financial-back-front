@@ -102,3 +102,10 @@ export type ResUserData={
   is_staff:boolean;
   is_superuser:boolean;
 }
+export type ReportType={
+  doron: string;
+  title:string;
+  body: string;
+  id: number,
+  picture: Array<any>;
+}

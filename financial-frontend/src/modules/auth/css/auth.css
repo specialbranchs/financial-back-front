@@ -5,8 +5,13 @@ body {
   }
    
   .App {
-    display: flex;
-    text-align: center;
+    /* display: flex; */
+    /* text-align: center; */
+    background: url(../../../assets/images/Logo.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    
   }
    
   main {

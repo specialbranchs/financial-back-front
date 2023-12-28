@@ -1,4 +1,4 @@
-import { Container, Typography, TextField ,Grid,Link} from "@mui/material";
+import { Container, Typography, TextField, Grid, Link, Box, Avatar } from "@mui/material";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -13,6 +13,7 @@ import { NavLink } from "react-router-dom";
 import api from "../../../api";
 import { finalize } from "rxjs/operators";
 import { doOnSubscribe } from "../../../utils/rxjs.utils";
+import assets from "../../../assets";
 const Login = (props: any) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const Login = (props: any) => {
     validationSchema,
     onSubmit: (values) => {
       setLoading(true);
-  
+
       api.auth
         .signInRequest$(values)
         .pipe(
@@ -43,11 +44,11 @@ const Login = (props: any) => {
         )
         .subscribe({
           next: async (user) => {
-            
+
             dispatch(actions.user.saveUser(user))
             setLoading(false)
           },
-          error: (error:any) => {
+          error: (error: any) => {
             // console.log(error)
             setLoading(false)
           }
@@ -56,12 +57,13 @@ const Login = (props: any) => {
   });
 
   return (
-    <Container className="App" component="main" maxWidth="xs">
+    <Container >
       <header className="App-header">
+
         <div className="bg-color">
-          <Typography component="h1" color={"gold"} variant="h4">
-            Login
-          </Typography>
+          <Box sx={{display:'flex',justifyContent:'center'}}>
+            <Avatar src={assets.images.logo} sx={{ height: 200, width: 200}} />
+          </Box>
           <form onSubmit={formik.handleSubmit}>
             <div className="loginBtn">
               <TextField
@@ -94,7 +96,7 @@ const Login = (props: any) => {
             <div className="loginBtn">
               <LoadingButton
                 loading={loading}
-               // loadingPosition="start"
+                // loadingPosition="start"
                 color="primary"
                 variant="contained"
                 fullWidth
