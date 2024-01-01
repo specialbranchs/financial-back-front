@@ -1,16 +1,19 @@
-import { Container, Typography, TextField, Grid, FormControl, FormGroup, FormControlLabel, Switch, Toolbar } from "@mui/material";
+import { TextField, FormControl, FormGroup, FormControlLabel, Switch, Toolbar } from "@mui/material";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
 import { PASSWORD_MIN_LENGTH } from "../../../utils/config";
-import { SignUpData, UploadUserData } from "../../../../typings/formData";
+import { UploadUserData } from "../../../../typings/formData";
 import { useDispatch } from "react-redux";
 import LoadingButton from "@mui/lab/LoadingButton";
-type Props={
-    Submiting:any
+import api from "../../../api";
+import { doOnSubscribe } from "../../../utils/rxjs.utils";
+import { finalize } from "rxjs/operators";
+type Props = {
+    AllUser: any
 }
-const AddUserScreen = ({Submiting}: Props) => {
+const AddUserScreen = ({ AllUser }: Props) => {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
@@ -35,11 +38,34 @@ const AddUserScreen = ({Submiting}: Props) => {
         initialValues,
         validationSchema,
         onSubmit: (values) => {
-             Submiting(values)
+
+            setLoading(true)
+
+            api.auth
+                .signUpRequest$(values)
+                .pipe(
+                    doOnSubscribe(() => setLoading(true)),
+                    finalize(() => setLoading(false))
+                )
+                .subscribe({
+                    next: async (res) => {
+                        // console.log('res', res)
+                        alert('created successfully')
+
+                        AllUser()
+                        setLoading(false)
+                        formik.resetForm()
+                    },
+                    error: (error: any) => {
+
+                        alert(error?.response?.data?.email)
+                        setLoading(false)
+                    }
+                });
         }
     })
 
-    
+
 
     return (
         <Toolbar sx={{
@@ -93,6 +119,7 @@ const AddUserScreen = ({Submiting}: Props) => {
                         control={<Switch
                             value={formik.values.is_admin}
                             defaultChecked
+                            checked={formik.values.is_admin}
                             onChange={(e: any) => {
                                 if (e.target.checked) {
                                     formik.setFieldValue('is_admin', e.target.checked)

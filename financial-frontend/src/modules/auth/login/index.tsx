@@ -44,8 +44,9 @@ const Login = (props: any) => {
         )
         .subscribe({
           next: async (user) => {
-
+            formik.resetForm()
             dispatch(actions.user.saveUser(user))
+          
             setLoading(false)
           },
           error: (error: any) => {
@@ -55,7 +56,7 @@ const Login = (props: any) => {
         });
     },
   });
-
+  // console.log(formik.values)
   return (
     <Container >
       <header className="App-header">
@@ -64,7 +65,7 @@ const Login = (props: any) => {
           <Box sx={{display:'flex',justifyContent:'center'}}>
             <Avatar src={assets.images.logo} sx={{ height: 200, width: 200}} />
           </Box>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit} >
             <div className="loginBtn">
               <TextField
                 fullWidth
@@ -75,6 +76,7 @@ const Login = (props: any) => {
                 onChange={formik.handleChange}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
+                autoComplete="off"
               />
             </div>
             <div className="loginBtn">
@@ -91,6 +93,7 @@ const Login = (props: any) => {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
+                autoComplete="off"
               />
             </div>
             <div className="loginBtn">

@@ -46,31 +46,7 @@ const AdminScreen = () => {
         }
       });
   }
-  const Submiting = (values: UploadUserData) => {
-
-    setLoading(true)
-
-    api.auth
-      .signUpRequest$(values)
-      .pipe(
-        doOnSubscribe(() => setLoading(true)),
-        finalize(() => setLoading(false))
-      )
-      .subscribe({
-        next: async (res) => {
-          // console.log('res', res)
-          alert('created successfully')
-         
-          AllUser()
-          setLoading(false)
-        },
-        error: (error: any) => {
-
-          alert(error?.response?.data?.email)
-          setLoading(false)
-        }
-      });
-  }
+ 
 
   const [value, setValue] = React.useState('1');
 
@@ -90,7 +66,7 @@ const AdminScreen = () => {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <AddUserScreen Submiting={Submiting}/>
+          <AddUserScreen AllUser={AllUser}/>
         </TabPanel>
         <TabPanel value="2">
           <UserListScreen userList={userList} AllUser={AllUser}/>

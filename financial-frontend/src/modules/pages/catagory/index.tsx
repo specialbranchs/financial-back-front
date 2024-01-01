@@ -10,8 +10,13 @@ import { finalize } from 'rxjs/operators';
 import { Designation } from '../../../../typings/structures';
 import { style } from '../search/editsearch/EditPodok';
 import SubCatagory from './subCatagory';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../state/reducer';
 
 const CatagoryScreen = () => {
+    
+    const { user } = useSelector((state: RootState) => state.currentUser)
+
     const [loading, setLoading] = useState(false);
     const [podokName, setPodokName] = useState('')
     const { designations } = useDesignation();
@@ -121,6 +126,7 @@ const CatagoryScreen = () => {
             });
     }
     //console.log(podokList)
+    console.log(user)
     return (
         <>
             <Toolbar sx={{
@@ -179,11 +185,11 @@ const CatagoryScreen = () => {
                             <SubCatagory id={value.id} text={text} />
 
                         </Box>
-                        <Box >
+                        { (user?.is_superuser || user?.is_adminuser) && <Box >
                             <Button onClick={() => DelCat(value.id)} size='sm' variant="soft" >
                                 <DeleteOutlineIcon sx={{ color: 'red' }} />
                             </Button>
-                        </Box>
+                        </Box> }
                     </Toolbar>
                 ))
             }

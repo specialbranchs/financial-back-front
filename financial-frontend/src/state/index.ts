@@ -13,7 +13,7 @@ const persistConfig:any = {
 
 export const store = createStore(
   persistReducer(persistConfig, rootReducer),
- //composeWithDevTools(applyMiddleware(logger))
+//  composeWithDevTools(applyMiddleware(logger))
 );
 
 export const persistor = persistStore(store);
