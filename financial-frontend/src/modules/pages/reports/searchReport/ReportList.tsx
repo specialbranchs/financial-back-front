@@ -8,7 +8,7 @@ import AirplayOutlinedIcon from '@mui/icons-material/AirplayOutlined';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import { ReportResponseData } from '../../../../api/report'
 import { Box, Modal, Toolbar } from '@mui/material';
-import { style } from '../../search/editsearch/EditDetails';
+
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../../../../utils/config';
 import TextAreaPropsForReport from './TextAreaForList';
@@ -16,6 +16,19 @@ import FileViewerScreen from '../../../../components/file-viewer';
 import api from '../../../../api';
 import { doOnSubscribe } from '../../../../utils/rxjs.utils';
 import { finalize } from 'rxjs/operators';
+
+export const style = {
+    position: 'fixed',
+    top: '5%',
+    left: '10%',
+    width: '70%',
+    bgcolor: 'background.paper',
+    border: '1px solid #000',
+    boxShadow: 24,
+    p: 4,
+    // overflow:'auto'
+
+};
 type props = {
     report: ReportResponseData
 }
@@ -31,20 +44,20 @@ const ReportList = ({ report }: props): any => {
     const [modalItem, setModalItem] = React.useState({ title: '', body: '' })
 
     const download = (url: string) => {
-        const type=url.split('.').pop()
+        const type = url.split('.').pop()
         var filename = url.replace(/^.*[\\/]/, '')
         api.catagory
-            .downloadFile(BACKEND_URL+url)
+            .downloadFile(BACKEND_URL + url)
             .pipe(
                 doOnSubscribe(() => { }),
                 finalize(() => { })
             )
             .subscribe({
                 next: async (file) => {
-                    const url=window.URL.createObjectURL(new Blob([file]))
-                    const link=document.createElement('a')
-                    link.href=url
-                    link.setAttribute('download',filename)
+                    const url = window.URL.createObjectURL(new Blob([file]))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download', filename)
                     document.body.appendChild(link)
                     link.click()
 
@@ -182,7 +195,7 @@ const ReportList = ({ report }: props): any => {
             </Modal>
 
             <Modal
-                sx={{ overflow: 'auto' }}
+                // sx={{ overflow: 'auto' }}
 
                 open={fileShow}
                 onClose={() => setFileshow(false)}
@@ -190,12 +203,12 @@ const ReportList = ({ report }: props): any => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Button onClick={() => setFileshow(false)} variant="soft">CLOSE</Button>
+                    <Button size='sm' onClick={() => setFileshow(false)} variant="soft">CLOSE</Button>
 
 
                     <Card variant="solid" sx={{ my: 1 }}>
                         <CardContent orientation="horizontal">
-                            <CardContent sx={{ overflowY: 'scroll', minHeight: 300, maxHeight: 400 }}>
+                            <CardContent sx={{ minHeight: 300, maxHeight: 400 }}>
                                 <FileViewerScreen
                                     type={fileStatus.type}
                                     file={fileStatus.file}
