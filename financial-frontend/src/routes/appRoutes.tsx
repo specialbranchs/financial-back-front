@@ -24,6 +24,7 @@ import { AccessUser } from '../utils/directUser';
 import SpecialReportScreen from '../modules/pages/reports/searchReport/special';
 import TrainingReportScreen from '../modules/pages/reports/searchReport/training';
 import ArchiveReportScreen from '../modules/pages/reports/searchReport/archive';
+import NewsPaperScreen from '../modules/pages/reports/searchReport/newspaper';
 
 const user=AccessUser()
 const appRoutes: RouteType[] = [
@@ -105,6 +106,15 @@ const appRoutes: RouteType[] = [
         state: "portal.rules_laws",
         sidebarProps: {
           displayText: "Rules and laws"
+        },
+        
+      },
+      {
+        path: "/portal/newspaper",
+        element: <NewsPaperScreen catagory="Newspaper"/>,
+        state: "portal.newspaper",
+        sidebarProps: {
+          displayText: "Newspaper"
         }
       }
     ]
