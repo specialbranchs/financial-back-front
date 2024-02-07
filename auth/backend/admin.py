@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import PodokChildName, ReportFile, DohoronName,CustomUser,Person,Political,Professional,Evaluation, Mamla,Personal,PodokName,Person_Podok,Report
+from .models import PodokChildName, ReportFile, DohoronName,CustomUser,Person,Political,Professional,Evaluation, Mamla,Personal,PodokName,Person_Podok,Report,PhotoGallary,PhotoGallaryPictures
 
 # admin.site.register(CustomUser)
 # admin.site.register(Person)
@@ -16,7 +16,8 @@ admin.site.register(Report)
 # admin.site.register(DohoronName)
 admin.site.register(ReportFile)
 admin.site.register(PodokChildName)
-
+admin.site.register(PhotoGallaryPictures)
+admin.site.register(PhotoGallary)
 from django.contrib import admin
 
 @admin.register(CustomUser)

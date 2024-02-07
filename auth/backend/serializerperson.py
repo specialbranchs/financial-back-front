@@ -1,7 +1,15 @@
 from rest_framework import serializers
 
 from backend.utils import functionE
-from .models import PodokChildName, ReportFile, DohoronName, Person, Personal, Evaluation, Mamla, Professional, Political, Report, Person_Podok, PodokName
+from .models import (PodokChildName, 
+ReportFile,
+DohoronName, 
+Person, Personal,
+Evaluation, Mamla,
+Professional, Political, 
+Report, Person_Podok, PodokName,
+PhotoGallary,PhotoGallaryPictures
+)
 
 
 class ChildPodokNameSerializer(serializers.ModelSerializer):
@@ -248,3 +256,41 @@ class ReportCountSerializer(serializers.ModelSerializer):
         model=Report
         fields='__all__'
     
+    
+    
+    
+    # gallary is goes here
+    
+    
+    
+class GallaryPicturesSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = PhotoGallaryPictures
+        fields = '__all__'
+    
+
+class GallarySerializer(serializers.ModelSerializer):
+
+    id = serializers.IntegerField(required=False)
+    photo_gallary = GallaryPicturesSerializer(many=True,read_only=True)
+    uploaded_file=serializers.ListField(
+        child=serializers.FileField(),
+        write_only=True
+    )
+    class Meta:
+        model = PhotoGallary
+        fields ='__all__'# ["id","doron","title","body","user_report","uploaded_file"]
+
+    def create(self, validated_data):
+        uploaded_file = validated_data.pop('uploaded_file')
+        isinstance = PhotoGallary.objects.create(**validated_data)
+        
+        for upload in uploaded_file:
+            PhotoGallaryPictures.objects.create(gallary=isinstance, picture=upload)
+            
+        # isinstance.save()
+ 
+        return isinstance
+

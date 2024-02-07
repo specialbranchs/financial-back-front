@@ -25,7 +25,8 @@ urlpatterns = [
     path('nid',ExistsNidApiView.as_view()),
     path('tin',ExistsTinApiView.as_view()),
     path('download',DownloadFileApiView.as_view()),
-    
+    path('gallary_add',AddGallaryApiView.as_view()),
+    path('gallary_get', getGallaryApiView.as_view()),
     
     
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

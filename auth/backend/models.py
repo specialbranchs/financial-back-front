@@ -213,3 +213,23 @@ class DohoronName(models.Model):
     
     def __str__(self):
         return "{}".format(self.id)    
+    
+    
+
+class PhotoGallary(models.Model):
+    event=models.CharField(null=True,blank=True,max_length=255)
+    created = models.DateTimeField(auto_now_add=True,blank=True)    
+    
+    def __str__(self):
+      return "{}".format(self.event) 
+  
+
+class PhotoGallaryPictures(models.Model):
+    gallary=models.ForeignKey(PhotoGallary,on_delete=models.CASCADE,related_name='photo_gallary')
+    picture = models.ImageField(upload_to='picture-gallary-upload/%Y/%m/%d/', max_length=255, null=True, blank=True)
+    
+    
+    def __str__(self):
+      return "{}".format(self.id)
+ 
+      

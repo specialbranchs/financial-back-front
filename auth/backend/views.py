@@ -14,11 +14,18 @@ from rest_framework.views import APIView
 
 from backend.decorator import unauthenticated_user
 from .serializers import UserSerializer
-from .serializerperson import ChildPodokNameSerializer, DoronNameSerializer, PersonSerializer, PodokNameCountSerializer, ReportCountSerializer, ReportSerializer, Person_PodokSerializerDepth, PersonSerializerDepth, PodokNameSerializer, Person_PodokSerializer
+from .serializerperson import (ChildPodokNameSerializer, 
+                               DoronNameSerializer, PersonSerializer, 
+                               PodokNameCountSerializer, ReportCountSerializer, 
+                               ReportSerializer, Person_PodokSerializerDepth, 
+                               PersonSerializerDepth, PodokNameSerializer, Person_PodokSerializer,
+                               GallarySerializer
+                               
+                               )
 
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .models import PodokChildName, CustomUser as User, Person, Report, PodokName, Person_Podok, DohoronName, ReportFile
+from .models import PodokChildName, CustomUser as User, Person, Report, PodokName, Person_Podok, DohoronName, ReportFile,PhotoGallaryPictures,PhotoGallary
 import jwt
 import datetime
 from django.db.models import Q
@@ -425,3 +432,36 @@ class DownloadFileApiView(APIView):
         
     
     
+
+# gallary goes here
+
+class AddGallaryApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        serializer = GallarySerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        # print(request.data)
+        return Response(serializer.data)
+
+
+class getGallaryApiView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+
+        event = request.data['event']
+        print(event)
+        if not event:
+           Rdata = PhotoGallary.objects.all().order_by('-created')[:10]
+        else:
+            Rdata = PhotoGallary.objects.filter(Q(event__contains=event))
+        
+        serializer = GallarySerializer(Rdata, many=True)
+
+        return Response(serializer.data)
+
+    def put(self, request):
+        print(request.data)
+        pass
