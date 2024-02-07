@@ -29,6 +29,11 @@ export type SearchDataItem = {
 
 };
 
+export type GallaryDataItem = {
+  id: number;
+  event:string;
+  picture: File[]
+}
 export type ReportDataItem = {
   id: number;
   doron: string;
@@ -36,6 +41,7 @@ export type ReportDataItem = {
   body: string;
   picture: File[]
 }
+
 
 export type PersonFormData = {
   podok: number;

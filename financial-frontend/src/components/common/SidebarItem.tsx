@@ -24,10 +24,9 @@ const SidebarItem = ({ item }: Props) => {
             backgroundColor: colorConfigs.sidebar.hoverBg
           },
           backgroundColor: appState?.appState === item.state ? colorConfigs.sidebar.activeBg : "unset",
-          paddingY: "12px",
-          paddingX: "24px",
+          color:appState?.appState === item.state ?'#0077e6':"unset",
           fontFamily:['Roboto Condensed', 'sans-serif'].join(","),
-        //  fontWeight:'700'
+          px: 2.5,
         }}
       >
         <ListItemIcon sx={{

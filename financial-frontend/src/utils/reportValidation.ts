@@ -1,6 +1,6 @@
 
 import * as Yup from "yup";
-import { ReportType } from "../../typings/formData";
+import { GallaryDataItem, ReportType } from "../../typings/formData";
 
 export const validationSchema = Yup.object().shape({
     id: Yup.number().test(
@@ -26,3 +26,5 @@ export const validationSchema = Yup.object().shape({
     id: 1,
     picture: []
   };
+
+ 

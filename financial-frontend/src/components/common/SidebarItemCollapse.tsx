@@ -36,10 +36,10 @@ const SidebarItemCollapse = ({ item }: Props) => {
             "&: hover": {
               backgroundColor: colorConfigs.sidebar.hoverBg
             },
-            paddingY: "12px",
-            paddingX: "24px",
+           
             fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
-            //  fontWeight:'700'
+            px: 2.5,
+
           }}
         >
           <ListItemIcon sx={{

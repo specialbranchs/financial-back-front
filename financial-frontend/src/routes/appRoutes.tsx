@@ -25,6 +25,9 @@ import SpecialReportScreen from '../modules/pages/reports/searchReport/special';
 import TrainingReportScreen from '../modules/pages/reports/searchReport/training';
 import ArchiveReportScreen from '../modules/pages/reports/searchReport/archive';
 import NewsPaperScreen from '../modules/pages/reports/searchReport/newspaper';
+import GalleryScreen from '../modules/pages/gallery';
+import { PhotoAlbum, PhotoAlbumOutlined } from '@mui/icons-material';
+import GallaryPreviewScreen from '../modules/pages/gallery/gallaryPreview';
 
 const user=AccessUser()
 const appRoutes: RouteType[] = [
@@ -120,6 +123,15 @@ const appRoutes: RouteType[] = [
     ]
   },
   {
+    path: "/photo_gallery",
+    element: <GallaryPreviewScreen/>,
+    state: "photo_gallery",
+    sidebarProps: {
+      displayText: "Photo gallery",
+      icon: <PhotoAlbum />
+    }
+  },
+  {
     path: "/archive",
     element: <ArchiveReportScreen catagory="Archive"/>,
     state: "archive",
@@ -164,6 +176,15 @@ const appRoutes: RouteType[] = [
         state: "entryforms.catagory",
         sidebarProps: {
           displayText: "Catagory"
+        }
+      }
+      ,
+      {
+        path: "/entryforms/gallary",
+        element: <GalleryScreen />,
+        state: "entryforms.gallary",
+        sidebarProps: {
+          displayText: "Gallary"
         }
       }
     ]

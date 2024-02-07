@@ -3,12 +3,14 @@ import search from './search'
 import common from './common';
 import report from './report';
 import catagory from './catagory';
+import gallary from './gallary';
 const api = {
   auth,
   search,
   common,
   report,
-  catagory
+  catagory,
+  gallary
 };
 
 export default api;

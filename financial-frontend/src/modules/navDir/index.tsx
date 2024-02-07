@@ -11,6 +11,7 @@ import { finalize } from "rxjs/operators";
 import { useDispatch } from "react-redux";
 import actions from "../../state/actions";
 import { User } from "../../../typings/structures";
+import DrawerMainScreen from "../../components/layout/DrawerMainLayout";
 
 
 function NavMainScreen() {
@@ -58,13 +59,7 @@ function NavMainScreen() {
   }, [])
   return (
     user ?
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            {routes}
-          </Route>
-        </Routes>
-      </HashRouter> :
+      <DrawerMainScreen/> :
       <AuthHomeScreen />
   );
 }

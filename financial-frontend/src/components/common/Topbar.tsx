@@ -13,45 +13,7 @@ const Topbar = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.currentUser)
   return (
-    <AppBar
-      position="fixed"
-      sx={{
-        width: `calc(100% - ${sizeConfigs.sidebar.width})`,
-        ml: sizeConfigs.sidebar.width,
-        boxShadow: "0px 1px 3px 2px #f1f1;",
-        backgroundColor: colorConfigs.topbar.bg,
-        color: colorConfigs.topbar.color,
-       
-      }}
-    >
-      <Toolbar
-        sx={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      // variant="dense"
-      >
-        <Box >
-          <ListItemText
-            disableTypography
-            primary={
-              <Typography
-                sx={{
-                  borderRadius: 2,
-                  paddingInline: 3,
-                  fontFamily: ['Raleway', 'sans-serif'].join(","),
-                  fontSize: 24,
-                  color: '#aa94d6',
-                //  color: 'white',
-                  fontWeight: '900'
-                }}
-              >
-                FINANCIAL INTELLIGENCE
-              </Typography>
-            }
-          />
-        </Box>
+  
         <Toolbar
           sx={{
             mr: 15,
@@ -85,10 +47,6 @@ const Topbar = () => {
             </ListItemButton>
           </Box>
         </Toolbar>
-
-
-      </Toolbar>
-    </AppBar>
   );
 };
 
