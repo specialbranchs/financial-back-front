@@ -1,8 +1,21 @@
-import { Container, Typography, TextField, Grid, Link, Box, Avatar } from "@mui/material";
+import {
+  Container,
+  Typography,
+  TextField,
+  Grid,
+  Link,
+  Box,
+  Avatar,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import '../css/auth.css'
+import "../css/auth.css";
 import { PASSWORD_MIN_LENGTH } from "../../../utils/config";
 import { SignInData } from "../../../../typings/formData";
 
@@ -14,9 +27,20 @@ import api from "../../../api";
 import { finalize } from "rxjs/operators";
 import { doOnSubscribe } from "../../../utils/rxjs.utils";
 import assets from "../../../assets";
+import React from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 const Login = (props: any) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [error, seterror] = useState("");
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is Required"),
@@ -35,7 +59,7 @@ const Login = (props: any) => {
     validationSchema,
     onSubmit: (values) => {
       setLoading(true);
-
+      seterror("");
       api.auth
         .signInRequest$(values)
         .pipe(
@@ -44,28 +68,30 @@ const Login = (props: any) => {
         )
         .subscribe({
           next: async (user) => {
-            formik.resetForm()
-            dispatch(actions.user.saveUser(user))
-          
-            setLoading(false)
+            formik.resetForm();
+            dispatch(actions.user.saveUser(user));
+            seterror("");
+            setLoading(false);
           },
           error: (error: any) => {
-            // console.log(error)
-            setLoading(false)
-          }
+            seterror(error?.response?.data?.detail);
+            setLoading(false);
+          },
         });
     },
   });
   // console.log(formik.values)
   return (
-    <Container >
+    <Container>
       <header className="App-header">
-
         <div className="bg-color">
-          <Box sx={{display:'flex',justifyContent:'center'}}>
-            <Avatar src={assets.images.logo} sx={{ height: 200, width: 200}} />
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Avatar src={assets.images.logo} sx={{ height: 200, width: 200 }} />
           </Box>
-          <form onSubmit={formik.handleSubmit} >
+          <Box>
+            <Typography color={'red'}>{error}</Typography>
+          </Box>
+          <form onSubmit={formik.handleSubmit}>
             <div className="loginBtn">
               <TextField
                 fullWidth
@@ -85,7 +111,8 @@ const Login = (props: any) => {
                 id="password"
                 name="password"
                 label="Password"
-                type="password"
+                variant="outlined"
+                type={showPassword ? "text" : "password"}
                 className=""
                 value={formik.values.password}
                 onChange={formik.handleChange}
@@ -94,8 +121,23 @@ const Login = (props: any) => {
                 }
                 helperText={formik.touched.password && formik.errors.password}
                 autoComplete="off"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </div>
+
             <div className="loginBtn">
               <LoadingButton
                 loading={loading}
