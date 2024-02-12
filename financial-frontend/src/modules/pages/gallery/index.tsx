@@ -65,6 +65,7 @@ const GalleryScreen = () => {
     formik.setFieldValue(e.target.id, e.target.value);
   };
   const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files)
     if (e.target.files) {
       const pic = e.target.files;
       let picArr = [];
@@ -72,11 +73,11 @@ const GalleryScreen = () => {
         picArr.push(pic[i]);
       }
 
-      formik.setFieldValue("picture", [...picArr, ...reportData.picture]);
+      formik.setFieldValue("picture", [...picArr]);
     }
   };
   const DelFile = (name: string) => {
-    const pic = reportData.picture;
+    const pic = formik.values.picture;
     let picArr = [];
     for (let i = 0; i < pic.length; i++) {
       if (pic[i].name !== name) picArr.push(pic[i]);

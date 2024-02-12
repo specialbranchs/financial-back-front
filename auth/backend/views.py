@@ -239,7 +239,7 @@ class getReportApiView(APIView):
 
         data = request.data['title']
         catagory = request.data['catagory']
-       
+        
         if not data:
            Rdata = Report.objects.filter(Q(doron__contains=catagory)).order_by('-created')[:10]
         else:

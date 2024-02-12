@@ -10,9 +10,7 @@ import { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { finalize } from "rxjs/operators";
-import { ReportSearch } from "../../../../../typings/structures";
 import api from "../../../../api";
-import { ReportResponseData } from "../../../../api/report";
 import { doOnSubscribe } from "../../../../utils/rxjs.utils";
 import { gallaryResponseData } from "../../../../api/gallary";
 import { BACKEND_URL } from "../../../../utils/config";

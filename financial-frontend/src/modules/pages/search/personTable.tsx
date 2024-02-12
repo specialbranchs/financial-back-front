@@ -22,6 +22,7 @@ import { Designation } from '../../../../typings/structures';
 import { BACKEND_URL } from '../../../utils/config';
 import useChildDoronList from '../../../hooks/useChildDoron';
 import ChildScreen from './child';
+import assets from '../../../assets';
 
 const sxStyle = {
     fontSize: 14,
@@ -72,8 +73,9 @@ export default function PersonTable({ personlist, podokList, reRender }: props) 
                                         <TableRow>
                                             <TableCell rowSpan={7} align='center'>
                                                 {
-                                                    value.picture &&
+                                                    value.picture ?
                                                     <img src={`${BACKEND_URL}/${value.picture}`} width={150} height={150} />
+                                                    :<img src={assets.images.user} width={150} height={150}/>
                                                 }
                                             </TableCell>
 
