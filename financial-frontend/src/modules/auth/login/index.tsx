@@ -11,6 +11,9 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
+  useTheme,
+  Button,
+  Paper,
 } from "@mui/material";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -29,6 +32,7 @@ import { doOnSubscribe } from "../../../utils/rxjs.utils";
 import assets from "../../../assets";
 import React from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 const Login = (props: any) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -80,94 +84,86 @@ const Login = (props: any) => {
         });
     },
   });
-  // console.log(formik.values)
+
   return (
     <Container>
-      <header className="App-header">
-        <div className="bg-color">
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Avatar src={assets.images.logo} sx={{ height: 200, width: 200 }} />
-          </Box>
-          <Box>
-            <Typography color={'red'}>{error}</Typography>
-          </Box>
-          <form onSubmit={formik.handleSubmit}>
-            <div className="loginBtn">
-              <TextField
-                fullWidth
-                id="email"
-                name="email"
-                label="Email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-                autoComplete="off"
-              />
-            </div>
-            <div className="loginBtn">
-              <TextField
-                fullWidth
-                id="password"
-                name="password"
-                label="Password"
-                variant="outlined"
-                type={showPassword ? "text" : "password"}
-                className=""
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-                autoComplete="off"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
-
-            <div className="loginBtn">
-              <LoadingButton
-                loading={loading}
-                // loadingPosition="start"
-                color="primary"
-                variant="contained"
-                fullWidth
-                type="submit"
-              >
-                SUMBIT
-              </LoadingButton>
-            </div>
-            {/* <Grid >
-              <Grid item xs>
-                <Link  variant="body2">
-                  {"  or  "}
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? "}
-                  <NavLink to={'/register'}>
-                  Sign Up
-                  </NavLink>
-                </Link>
-              </Grid>
-            </Grid> */}
-          </form>
-        </div>
-      </header>
+      <Paper
+        elevation={3}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "75vh",
+          margin: 10,
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Avatar src={assets.images.logo} sx={{ height: 200, width: 200 }} />
+        </Box>
+        <Box>
+          <Typography color={"red"}>{error}</Typography>
+        </Box>
+        <form
+          style={{ flexDirection: "column", display: "flex", width: "40%" }}
+          onSubmit={formik.handleSubmit}
+        >
+          <FormControl sx={{ marginTop: 5 }}>
+            <TextField
+              fullWidth
+              id="email"
+              name="email"
+              label="Email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              autoComplete="off"
+            />
+          </FormControl>
+          <FormControl sx={{ marginTop: 2 }}>
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label="Password"
+              variant="outlined"
+              type={showPassword ? "text" : "password"}
+              className=""
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              autoComplete="off"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
+          <LoadingButton
+            loading={loading}
+            // loadingPosition="start"
+            sx={{ marginTop: 3 }}
+            color="primary"
+            variant="contained"
+            fullWidth
+            type="submit"
+          >
+            SUMBIT
+          </LoadingButton>
+        </form>
+      </Paper>
     </Container>
   );
 };
