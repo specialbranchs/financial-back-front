@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Kohinoor-Bangla';
+    src: 
+    /* /url('./assets/fonts/KohinoorBangla-Bold.otf') format('opentype'),
+         url('./assets/fonts/KohinoorBangla-Light.otf') format('opentype'),
+         url('./assets/fonts/KohinoorBangla-Medium.otf')  format('opentype'), */
+         url('./assets/fonts/KohinoorBangla-Regular.otf')  format('opentype'),
+         /* url('./assets/fonts/KohinoorBangla-Semibold.otf')  format('opentype'); */
+        
+    /* Add additional font formats if necessary */
+    /* Specify the correct path to the font files */
+  }

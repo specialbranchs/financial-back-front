@@ -14,6 +14,7 @@ import { doOnSubscribe } from '../../../utils/rxjs.utils';
 import { finalize } from 'rxjs/operators';
 import colorConfigs from '../../../configs/colorConfigs';
 import { ChartJs } from './chart/chart';
+import { sxStyle } from '../search/editsearch/PersonDetails';
 type Props = {};
 
 const DashboardIndex = (props: Props) => {
@@ -56,16 +57,16 @@ const DashboardIndex = (props: Props) => {
 
         <Typography variant="h6" gutterBottom sx={{
           color: colorConfigs.sidebar.bg,
-          fontSize:16,
+          fontSize:18,
           fontWeight:'500',
-          fontFamily: ['Roboto Condensed', 'sans-serif'].join(",")
+          fontFamily: sxStyle.fontFamily
         }}>সর্বমোট ভেরিফাইড পার্সন - </Typography>
         <Typography variant="h6" gutterBottom sx={{
           color: colorConfigs.sidebar.bg,
           fontSize:16,
           fontWeight:'500',
          
-          fontFamily: ['Roboto Condensed', 'sans-serif'].join(",")
+          fontFamily:sxStyle.fontFamily
         }}>{count} জন</Typography>
       </Grid>
       <Grid item xs={6}>
@@ -81,14 +82,14 @@ const DashboardIndex = (props: Props) => {
                 <ListItemText 
                   primary={<Typography variant="h6" gutterBottom sx={{
                     color: colorConfigs.sidebar.bg,
-                    fontSize: 12,
-                    fontFamily: ['RobotoCondensed', 'sans-serif'].join(",")
+                    fontSize: 16,
+                    fontFamily:sxStyle.fontFamily
                   }}>{val?.title}</Typography>} 
                   secondary={
                     <Typography variant="h5" gutterBottom sx={{
                       color: colorConfigs.sidebar.bg,
-                      fontSize: 10,
-                      fontFamily: ['RobotoCondensed', 'sans-serif'].join(",")
+                      fontSize: 12,
+                      fontFamily:sxStyle.fontFamily
                     }}>{val?.total_count} জন
                      <LinearProgress variant="determinate" value={70} sx={{mt:2}} />
                     </Typography>
@@ -107,6 +108,7 @@ const DashboardIndex = (props: Props) => {
           data={Array.from(report, (val: any) => val?.total_count)}
           labels={Array.from(report, (val: any) => val?.title)}
           dataset='পার্সন '
+          
         />
       </Grid>
 
@@ -123,9 +125,9 @@ const DashboardIndex = (props: Props) => {
         }}>{count}</Typography> */}
         <Typography variant="h6" gutterBottom sx={{
           color: colorConfigs.sidebar.bg,
-          fontSize:16,
+          fontSize:18,
           fontWeight:'500',
-          fontFamily: ['Roboto Condensed', 'sans-serif'].join(",")
+          fontFamily:sxStyle.fontFamily
         }}>সর্বমোট রিপোর্ট</Typography>
       </Grid>
       <Grid item xs={6} >
@@ -141,15 +143,15 @@ const DashboardIndex = (props: Props) => {
                 <ListItemText secondary={
                   <Typography variant="h5" gutterBottom sx={{
                     color: colorConfigs.sidebar.bg,
-                    fontSize: 10,
-                    fontFamily: ['RobotoCondensed', 'sans-serif'].join(",")
+                    fontSize: 12,
+                    fontFamily: sxStyle.fontFamily
                   }}>{val?.doron__count} টি
                    <LinearProgress variant="determinate" value={70} sx={{mt:2}} />
                   </Typography>
                 } primary={<Typography variant="h6" gutterBottom sx={{
                   color: colorConfigs.sidebar.bg,
-                  fontSize: 12,
-                  fontFamily: ['RobotoCondensed', 'sans-serif'].join(",")
+                  fontSize: 16,
+                  fontFamily: sxStyle.fontFamily
                 }}>{val?.doron}
                 
                 </Typography>} />

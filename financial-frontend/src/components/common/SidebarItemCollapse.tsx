@@ -1,13 +1,22 @@
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import {
+  Box,
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import colorConfigs from "../../configs/colorConfigs";
 import { RouteType } from "../../routes/config";
-import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
+import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
+import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import SidebarItem from "./SidebarItem";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/reducer";
 import { AccessUser } from "../../utils/directUser";
+import { sxStyle } from "../../modules/pages/search/editsearch/PersonDetails";
 // import { RootState } from "../../redux/store";
 
 type Props = {
@@ -17,66 +26,63 @@ type Props = {
 const SidebarItemCollapse = ({ item }: Props) => {
   const [open, setOpen] = useState(false);
 
-  const { appState } = useSelector((state: RootState) => state.currentappState)
-  const user = AccessUser()
- 
+  const { appState } = useSelector((state: RootState) => state.currentappState);
+  const user = AccessUser();
+
   useEffect(() => {
     if (appState?.appState) {
       if (appState?.appState.includes(item.state)) {
-        setOpen(true)
+        setOpen(true);
       }
     }
-  }, [appState, item])
-  return (
-    item.sidebarProps ? (
-      <>
-        <ListItemButton
-          onClick={() => setOpen(!open)}
-          sx={{
-            "&: hover": {
-              backgroundColor: colorConfigs.sidebar.hoverBg
-            },
-           
-            fontFamily: ['Roboto Condensed', 'sans-serif'].join(","),
-            px: 2.5,
+  }, [appState, item]);
+  return item.sidebarProps ? (
+    <>
+      <ListItemButton
+        onClick={() => setOpen(!open)}
+        sx={{
+          "&: hover": {
+            backgroundColor: colorConfigs.sidebar.hoverBg,
+          },
 
+          px: 2.5,
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            color: colorConfigs.sidebar.color,
           }}
         >
-          <ListItemIcon sx={{
-            color: colorConfigs.sidebar.color
-          }}>
-            {item.sidebarProps.icon && item.sidebarProps.icon}
-          </ListItemIcon>
-          <ListItemText
-            disableTypography
-            primary={
-              <Typography>
-                {item.sidebarProps.displayText}
-              </Typography>
-            }
-          />
-          {open ? <ExpandLessOutlinedIcon /> : <ExpandMoreOutlinedIcon />}
-        </ListItemButton>
-        <Collapse in={open} timeout="auto">
-          <List>
-            {item.child?.map((route, index) => (
-              route.sidebarProps ? (
-                route.child ? (
-                  <SidebarItemCollapse item={route} key={index} />
-                ) : (
-                  route.state == 'search.specialreport' && (user.is_adminuser || user.is_superuser) ?
-                    <SidebarItem item={route} key={index} />
-                    : route.state !== 'search.specialreport' ?
-                      <SidebarItem item={route} key={index} /> :
-                      null
-                )
+          {item.sidebarProps.icon && item.sidebarProps.icon}
+        </ListItemIcon>
+        <ListItemText
+          disableTypography
+          primary={
+            <Typography sx={sxStyle}>
+              {item.sidebarProps.displayText}
+            </Typography>
+          }
+        />
+        {open ? <ExpandLessOutlinedIcon /> : <ExpandMoreOutlinedIcon />}
+      </ListItemButton>
+      <Collapse in={open} timeout="auto">
+        <List>
+          {item.child?.map((route, index) =>
+            route.sidebarProps ? (
+              route.child ? (
+                <SidebarItemCollapse item={route} key={index} />
+              ) : route.state == "search.specialreport" &&
+                (user.is_adminuser || user.is_superuser) ? (
+                <SidebarItem item={route} key={index} />
+              ) : route.state !== "search.specialreport" ? (
+                <SidebarItem item={route} key={index} />
               ) : null
-            ))}
-          </List>
-        </Collapse>
-      </>
-    ) : null
-  );
+            ) : null
+          )}
+        </List>
+      </Collapse>
+    </>
+  ) : null;
 };
 
 export default SidebarItemCollapse;

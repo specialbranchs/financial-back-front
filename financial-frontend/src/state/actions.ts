@@ -1,5 +1,7 @@
 import user from './user/actions';
 import appState from './appState/actions'
+import gallary from './gallary/actions';
+
 export const LOG_OUT = 'LOG_OUT';
 
 export interface LogOutAction {
@@ -13,6 +15,7 @@ const logOut = (): LogOutAction => ({
 const actions = {
   user,
   appState,
+  gallary,
   logOut
 };
 

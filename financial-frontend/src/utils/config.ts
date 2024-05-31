@@ -98,3 +98,5 @@ export const NC={
   "influential":"স্থানীয় প্রভাব",
   "evaluation":"বিবিধ|মতামত",
   }
+
+  export const lineargradient='linear-gradient(90deg, #0e101d 0%, #19193b 35%, #363271 100%)'

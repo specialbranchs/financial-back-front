@@ -220,7 +220,12 @@ class ReportFileSerializer(serializers.ModelSerializer):
         model = ReportFile
         fields = '__all__'
     
+class ReportbodySerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Report
+        fields='__all__'
 
+        
 class ReportSerializer(serializers.ModelSerializer):
 
     id = serializers.IntegerField(required=False)
@@ -270,6 +275,11 @@ class GallaryPicturesSerializer(serializers.ModelSerializer):
         model = PhotoGallaryPictures
         fields = '__all__'
     
+class GallaryEventNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PhotoGallary
+        fields ='__all__'
+
 
 class GallarySerializer(serializers.ModelSerializer):
 

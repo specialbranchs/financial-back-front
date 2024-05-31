@@ -9,27 +9,22 @@ import appRoutes from "../../routes/appRoutes";
 import { AccessUser } from "../../utils/directUser";
 
 const Sidebar = () => {
-  const user = AccessUser()
- 
-  return (
-   
-      <List disablePadding>
-        {appRoutes.map((route, index) => (
-          route.sidebarProps ? (
-            route.child ? (
-              <SidebarItemCollapse item={route} key={index} />
-            ) : (
-              route.state == 'admin' && user.is_superuser ?
-                <SidebarItem item={route} key={index} />
-                : route.state !== 'admin' ?
-                  <SidebarItem item={route} key={index} /> :
-                  null
+  const user = AccessUser();
 
-            )
+  return (
+    <List disablePadding>
+      {appRoutes.map((route, index) =>
+        route.sidebarProps ? (
+          route.child ? (
+            <SidebarItemCollapse item={route} key={index} />
+          ) : route.state == "admin" && user.is_superuser ? (
+            <SidebarItem item={route} key={index} />
+          ) : route.state !== "admin" ? (
+            <SidebarItem item={route} key={index} />
           ) : null
-        ))}
-      </List>
-   
+        ) : null
+      )}
+    </List>
   );
 };
 

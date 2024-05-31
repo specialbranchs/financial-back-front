@@ -1,6 +1,7 @@
 import {
   Box,
   CircularProgress,
+  OutlinedInput,
   Paper,
   TextField,
   Toolbar,
@@ -15,6 +16,7 @@ import { doOnSubscribe } from "../../../../utils/rxjs.utils";
 import { gallaryResponseData } from "../../../../api/gallary";
 import { BACKEND_URL } from "../../../../utils/config";
 import Gallery from "react-photo-gallery";
+import { sxStyle } from "../../search/editsearch/PersonDetails";
 
 //import * as types from '../../../../typings/formData';
 type props = {
@@ -81,21 +83,18 @@ const GallaryPreviewScreen = () => {
       <Toolbar
         sx={{
           flexWrap: "wrap",
-          boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
+          boxShadow: 1,
           backgroundColor: "white",
         }}
       >
         <Box m={1}>
-          <TextField
+          <OutlinedInput
             onChange={dataHandler}
             value={item}
-            label={"search gallary"}
+            placeholder={"search gallary"}
             id="keyword"
-            variant="outlined"
             size="small"
-            sx={{
-              "&.MuiTextField-root": {},
-            }}
+            sx={sxStyle}
           />
         </Box>
         <LoadingButton
@@ -104,6 +103,7 @@ const GallaryPreviewScreen = () => {
           color="primary"
           variant="contained"
           onClick={() => submit()}
+          sx={sxStyle}
         >
           SEARCH
         </LoadingButton>
@@ -121,17 +121,17 @@ const GallaryPreviewScreen = () => {
         </Toolbar>
       )}
       {photosArr.map((item) => (
-        <Paper elevation={3} sx={{ padding: 5,marginTop:5 }}>
+        <Paper elevation={3} sx={{ padding: 5, marginTop: 5 }}>
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              marginY:1
+              marginY: 1,
             }}
           >
-            <Typography>{item.event}</Typography>
-            <Typography>{item.created.slice(0,10)}</Typography>
+            <Typography sx={sxStyle}>{item.event}</Typography>
+            <Typography sx={sxStyle}>{item.created.slice(0, 10)}</Typography>
           </Box>
           <Gallery photos={item.photos} />
         </Paper>

@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import uuid
 from django.shortcuts import render
-
+from .models import PhotoGallary
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
@@ -15,11 +15,11 @@ from rest_framework.views import APIView
 from backend.decorator import unauthenticated_user
 from .serializers import UserSerializer
 from .serializerperson import (ChildPodokNameSerializer, 
-                               DoronNameSerializer, PersonSerializer, 
-                               PodokNameCountSerializer, ReportCountSerializer, 
+                               DoronNameSerializer, GallaryEventNameSerializer, GallaryPicturesSerializer, PersonSerializer, 
+                               PodokNameCountSerializer, ReportCountSerializer, ReportFileSerializer, 
                                ReportSerializer, Person_PodokSerializerDepth, 
                                PersonSerializerDepth, PodokNameSerializer, Person_PodokSerializer,
-                               GallarySerializer
+                               GallarySerializer, ReportbodySerializer
                                
                                )
 
@@ -220,17 +220,41 @@ class AddPersonApiView(APIView):
         return Response(serializer.data)
 
 
-class AddReportApiView(APIView):
+# class AddReportApiView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         data = request.data
+#         serializer = ReportSerializer(data=data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         # print(request.data)
+#         return Response(serializer.data)
+
+class AddReportBodyApiView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
-        serializer = ReportSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        # print(request.data)
+        reportData=Report.objects.create(**data)
+        reportData.save()
+        serializer = ReportbodySerializer(reportData)
+       
         return Response(serializer.data)
 
+
+class AddReportFileApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        id=data['id']
+        picture=data['uploaded_file']
+        fileIns=ReportFile.objects.create(file_id=int(id),picture=picture)
+        fileIns.save()
+        serializer=ReportFileSerializer(fileIns)
+        return Response(serializer.data)
+    
 
 class getReportApiView(APIView):
     permission_classes = [IsAuthenticated]
@@ -435,15 +459,25 @@ class DownloadFileApiView(APIView):
 
 # gallary goes here
 
+class AddGallaryEventApiView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self,request):
+        event=request.data['event']
+        gallaryEvent=PhotoGallary.objects.create(event=event)
+        serializer=GallaryEventNameSerializer(gallaryEvent)
+        return Response(serializer.data)
+
+
 class AddGallaryApiView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
-        serializer = GallarySerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        # print(request.data)
+        id=data['id']
+        picture=data['uploaded_file']
+        gallaruIns=PhotoGallaryPictures.objects.create(gallary_id=int(id),picture=picture)
+        gallaruIns.save()
+        serializer=GallaryPicturesSerializer(gallaruIns)
         return Response(serializer.data)
 
 
@@ -465,3 +499,10 @@ class getGallaryApiView(APIView):
     def put(self, request):
         print(request.data)
         pass
+
+
+
+class setSingleGallay(APIView):
+    def post(self,request):
+        print(request.data['id'])
+        return Response({"data":1})

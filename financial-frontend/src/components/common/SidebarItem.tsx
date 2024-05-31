@@ -6,6 +6,7 @@ import colorConfigs from "../../configs/colorConfigs";
 import { RouteType } from "../../routes/config";
 import { RootState } from "../../state/reducer";
 import { store } from "../../state";
+import { sxStyle } from "../../modules/pages/search/editsearch/PersonDetails";
 
 type Props = {
   item: RouteType;
@@ -13,31 +14,36 @@ type Props = {
 
 const SidebarItem = ({ item }: Props) => {
   const { appState } = useSelector((state: RootState) => state.currentappState);
- 
-  return (
-    item.sidebarProps && item.path ? (
-      <ListItemButton
-        component={Link}
-        to={item.path}
+
+  return item.sidebarProps && item.path ? (
+    <ListItemButton
+      component={Link}
+      to={item.path}
+      sx={{
+        "&: hover": {
+          backgroundColor: colorConfigs.sidebar.hoverBg,
+        },
+        ml: item.sidebarProps.icon ? "unset" : 1,
+        backgroundColor:
+          appState?.appState === item.state
+            ? colorConfigs.sidebar.activeBg
+            : "unset",
+        color: appState?.appState === item.state ? "#0077e6" : "unset",
+        ...sxStyle,
+        
+        px: 2.5,
+      }}
+    >
+      <ListItemIcon
         sx={{
-          "&: hover": {
-            backgroundColor: colorConfigs.sidebar.hoverBg
-          },
-          backgroundColor: appState?.appState === item.state ? colorConfigs.sidebar.activeBg : "unset",
-          color:appState?.appState === item.state ?'#0077e6':"unset",
-          fontFamily:['Roboto Condensed', 'sans-serif'].join(","),
-          px: 2.5,
+          color: colorConfigs.sidebar.color,
         }}
       >
-        <ListItemIcon sx={{
-          color: colorConfigs.sidebar.color
-        }}>
-          {item.sidebarProps.icon && item.sidebarProps.icon}
-        </ListItemIcon>
-        {item.sidebarProps.displayText}
-      </ListItemButton>
-    ) : null
-  );
+        {item.sidebarProps.icon && item.sidebarProps.icon}
+      </ListItemIcon>
+      {item.sidebarProps.displayText}
+    </ListItemButton>
+  ) : null;
 };
 
 export default SidebarItem;

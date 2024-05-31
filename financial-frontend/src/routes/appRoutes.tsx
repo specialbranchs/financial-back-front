@@ -26,7 +26,7 @@ import TrainingReportScreen from '../modules/pages/reports/searchReport/training
 import ArchiveReportScreen from '../modules/pages/reports/searchReport/archive';
 import NewsPaperScreen from '../modules/pages/reports/searchReport/newspaper';
 import GalleryScreen from '../modules/pages/gallery';
-import { PhotoAlbum, PhotoAlbumOutlined } from '@mui/icons-material';
+import { ArchiveOutlined, PhotoAlbum, PhotoAlbumOutlined, PostAddOutlined } from '@mui/icons-material';
 import GallaryPreviewScreen from '../modules/pages/gallery/gallaryPreview';
 
 const user=AccessUser()
@@ -137,7 +137,7 @@ const appRoutes: RouteType[] = [
     state: "archive",
     sidebarProps: {
       displayText: "Archive",
-      icon: <BrowserUpdatedOutlinedIcon />
+      icon: <ArchiveOutlined />
     }
   },
   {
@@ -146,7 +146,7 @@ const appRoutes: RouteType[] = [
     state: "entryforms",
     sidebarProps: {
       displayText: "Entryforms",
-      icon: <DrawOutlinedIcon />
+      icon: <PostAddOutlined />
     },
     child: [
       {

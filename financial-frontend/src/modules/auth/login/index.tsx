@@ -32,6 +32,7 @@ import { doOnSubscribe } from "../../../utils/rxjs.utils";
 import assets from "../../../assets";
 import React from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { sxStyle } from "../../pages/search/editsearch/PersonDetails";
 
 const Login = (props: any) => {
   const [loading, setLoading] = useState(false);
@@ -154,13 +155,14 @@ const Login = (props: any) => {
           <LoadingButton
             loading={loading}
             // loadingPosition="start"
-            sx={{ marginTop: 3 }}
+            // sx={{ marginTop: 3 }}
             color="primary"
             variant="contained"
             fullWidth
             type="submit"
+            sx={{ ...sxStyle, mt: 3 }}
           >
-            SUMBIT
+            Sumbit
           </LoadingButton>
         </form>
       </Paper>

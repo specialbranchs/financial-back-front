@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 
-import { Avatar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  OutlinedInput,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { LoadingButton } from "@mui/lab";
 
 import FormControl from "@mui/joy/FormControl";
@@ -22,6 +29,12 @@ import {
 import api from "../../../api";
 import { doOnSubscribe } from "../../../utils/rxjs.utils";
 import { finalize } from "rxjs/operators";
+import SinglePreview from "./gallaryPreview/signlePreview";
+import { useDispatch, useSelector } from "react-redux";
+import actions from "../../../state/actions";
+import { RootState } from "../../../state/reducer";
+import { size, toArray } from "lodash";
+import { sxStyle } from "../search/editsearch/PersonDetails";
 
 const primry = {
   event: "",
@@ -29,9 +42,11 @@ const primry = {
   picture: [],
 };
 const GalleryScreen = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
-  const [reportData, setReportData] = React.useState<GallaryDataItem>(primry);
+  const { fileProgress } = useSelector(
+    (state: RootState) => state.currentgallaryState
+  );
 
   const formik = useFormik({
     initialValues,
@@ -39,25 +54,29 @@ const GalleryScreen = () => {
     // validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      console.log(values);
-      setLoading(true);
-        api.gallary
-          .setGallary$(values)
-          .pipe(
-            doOnSubscribe(() => setLoading(true)),
-            finalize(() => setLoading(false))
-          )
-          .subscribe({
-            next: async (report) => {
-              formik.resetForm();
-              setLoading(false);
-              alert("Gallary ssubmit successfully");
-            },
-            error: (error: any) => {
-              // console.log(error)
-              setLoading(false);
-            },
-          });
+      api.gallary
+        .setGallaryEventName(values.event)
+        .pipe(
+          doOnSubscribe(() => setLoading(true)),
+          finalize(() => setLoading(false))
+        )
+        .subscribe({
+          next: async (res) => {
+           // console.log("res", res);
+            dispatch(actions.gallary.resetUploadFile());
+            dispatch(
+              actions.gallary.SaveUploadFile({
+                id: res.id,
+                files: values.picture,
+              })
+            );
+            // setLoading(true);
+          },
+          error: (error: any) => {
+            // console.log(error)
+            setLoading(false);
+          },
+        });
     },
   });
 
@@ -65,7 +84,6 @@ const GalleryScreen = () => {
     formik.setFieldValue(e.target.id, e.target.value);
   };
   const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files)
     if (e.target.files) {
       const pic = e.target.files;
       let picArr = [];
@@ -75,6 +93,7 @@ const GalleryScreen = () => {
 
       formik.setFieldValue("picture", [...picArr]);
     }
+    e.target.value = "";
   };
   const DelFile = (name: string) => {
     const pic = formik.values.picture;
@@ -86,122 +105,144 @@ const GalleryScreen = () => {
     formik.setFieldValue("picture", picArr);
   };
 
-  // console.log('formik', formik.values)
+  const numberOfUploadedFileArr = toArray(fileProgress).filter(
+    (file) => file.progress === 100
+  );
 
+  const reset = () => {
+    setLoading(false);
+
+    dispatch(actions.gallary.resetUploadFile());
+    formik.resetForm();
+  };
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid
         container
-        spacing={2}
         sx={{
           boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
           padding: 2,
+          borderRadius: 3,
         }}
       >
-        <Grid item xs={12}>
-          <FormControl id="event" size="sm" color="primary">
-            <FormLabel>ইভেন্টের নাম</FormLabel>
-            <Input
-              id="event"
-              placeholder="ইভেন্টের নাম"
-              type="text"
-              autoComplete="on"
-              //   autoFocus
-              value={formik.values.event}
-              error={
-                Boolean(formik.errors.event) && Boolean(formik.touched.event)
-              }
-              onChange={dataHandler}
-              variant="outlined"
-            />
-            {formik.errors.event && (
-              <FormHelperText sx={{ color: "red" }}>
-                {formik.errors.event}
-              </FormHelperText>
-            )}
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Toolbar
-            variant="dense"
-            sx={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography>সংযুক্তি</Typography>
-            <Button
-              component="label"
-              variant="contained"
-              startIcon={<CloudUploadIcon />}
-              href="#file-upload"
-            >
-              Upload Images
-              <VisuallyHiddenInput
-                type="file"
-                accept="image/png, image/gif, image/jpeg"
-                onChange={fileChange}
-                multiple
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            boxShadow: 1,
+            padding: 2,
+            margin: 1,
+          }}
+        >
+          <Grid item xs={12}>
+            <FormControl id="event" size="sm" color="primary">
+              <FormLabel sx={{ ...sxStyle, fontWeight: "200" }} required>
+                ইভেন্টের নাম
+              </FormLabel>
+              <OutlinedInput
+                id="event"
+                // placeholder="ইভেন্টের নাম"
+                type="text"
+                autoComplete="on"
+                //   autoFocus
+                value={formik.values.event}
+                sx={sxStyle}
+                error={
+                  Boolean(formik.errors.event) && Boolean(formik.touched.event)
+                }
+                onChange={dataHandler}
               />
-            </Button>
-          </Toolbar>
-          {formik.errors.picture && (
-            <FormHelperText sx={{ color: "red" }}>
-              ফাইল বাছাই করুন
-            </FormHelperText>
-          )}
-        </Grid>
-        {formik.values.picture.map((value: any) => (
-          <Grid item xs={12} key={value.name}>
+
+              {formik.errors.event && (
+                <FormHelperText
+                  sx={{ ...sxStyle, fontWeight: "200", color: "red" }}
+                >
+                  {formik.errors.event}
+                </FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
             <Toolbar
+              disableGutters
+              variant="dense"
               sx={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                borderBottom: 1,
-                borderColor: "grayText",
+                alignItems: "center",
               }}
             >
-              <Box
-                sx={{
-                    display:'flex',
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems:"center"
-                }}
+              <Typography sx={{ ...sxStyle, fontWeight: "200" }}>
+                সংযুক্তি
+              </Typography>
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                href="#file-upload"
+                sx={sxStyle}
               >
-                <Box>
-                  <Avatar
-                  sx={{height:60,width:60,borderRadius:0}}
-                   
-                   src={URL.createObjectURL(value)} 
-                   alt="your image" />
-                </Box>
-                <Box marginLeft={5}>
-                  <Typography>{value.name}</Typography>
-                </Box>
-              </Box>
-
-              <Box>
-                <Button onClick={() => DelFile(value.name)}>
-                  <DeleteOutlineIcon sx={{ color: "red" }} />
-                </Button>
-              </Box>
+                Upload Images
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/png, image/gif, image/jpeg"
+                  onChange={fileChange}
+                  multiple
+                />
+              </Button>
             </Toolbar>
+            {formik.errors.picture && (
+              <FormHelperText sx={{ color: "red", ...sxStyle }}>
+                ফাইল বাছাই করুন
+              </FormHelperText>
+            )}
           </Grid>
-        ))}
-        <Grid item xs={12}>
+        </Grid>
+        <SinglePreview direction={'gallary'} value={formik.values.picture} DelFile={DelFile} />
+
+        <Grid item xs={12} mt={2}>
           <LoadingButton
             loading={loading}
-            // loadingPosition="start"
             color="secondary"
             variant="contained"
-            // onClick={formik.handleSubmit}
             type="submit"
+            sx={{
+              ...sxStyle,
+              display:
+                formik.values.picture.length > 0 &&
+                formik.values.picture.length === numberOfUploadedFileArr.length
+                  ? "none"
+                  : "unset",
+            }}
           >
             SUBMIT
           </LoadingButton>
+
+          {formik.values.picture.length > 0 &&
+            formik.values.picture.length === numberOfUploadedFileArr.length && (
+              <Toolbar
+                sx={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  boxShadow: 2,
+                  borderRadius: 2,
+                  p: 1,
+                }}
+              >
+                <Typography color={"green"} sx={sxStyle}>
+                  Upload Completed
+                </Typography>
+                <LoadingButton
+                  color="primary"
+                  variant="contained"
+                  onClick={() => reset()}
+                  sx={sxStyle}
+                >
+                  RESET
+                </LoadingButton>
+              </Toolbar>
+            )}
         </Grid>
       </Grid>
     </form>

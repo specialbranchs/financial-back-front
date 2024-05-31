@@ -15,9 +15,9 @@ import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { PrintOutlined } from "@mui/icons-material";
 
-const sxStyle = {
+export const sxStyle ={
   fontSize: 14,
-  fontFamily: ["Roboto Condensed", "sans-serif"].join(","),
+  fontFamily: ["Kohinoor-Bangla", "sans-serif"].join(","),
 };
 type props = {
   person: SearchInResponseData;
@@ -50,7 +50,7 @@ const PersonDetails = ({ person }: props) => {
         onClick={handleOpen}
         variant="soft"
         size="sm"
-        sx={{ fontWeight: "100" }}
+        sx={{ fontWeight: "100", ...sxStyle }}
       >
         বিস্তারিত
       </Button>
@@ -73,14 +73,14 @@ const PersonDetails = ({ person }: props) => {
             <Button
               onClick={handleClose}
               variant="soft"
-              sx={{ fontWeight: "100" }}
+              sx={{ fontWeight: "100", ...sxStyle }}
             >
               CLOSE
             </Button>
             <Button
               onClick={handlePrint}
               variant="soft"
-              sx={{ fontWeight: "100" }}
+              sx={{ fontWeight: "100", ...sxStyle }}
             >
               PRINT
               <PrintOutlined />
@@ -107,7 +107,7 @@ const PersonDetails = ({ person }: props) => {
               <Toolbar sx={{ flexDirection: "column", margin: 4 }}>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center" colSpan={4}>
+                    <TableCell sx={sxStyle} align="center" colSpan={4}>
                       বিস্তারিত
                     </TableCell>
                   </TableRow>
@@ -125,27 +125,10 @@ const PersonDetails = ({ person }: props) => {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell
-                      sx={{
-                        fontSize: 12,
-
-                        fontFamily: ["Roboto Condensed", "sans-serif"].join(
-                          ","
-                        ),
-                      }}
-                    >
-                      পদক
-                    </TableCell>
+                    <TableCell sx={sxStyle}>পদক</TableCell>
                     <TableCell align="left">
                       {person.person_Podok.map((item: any) => (
-                        <Typography
-                          sx={{
-                            fontSize: 12,
-                            fontFamily: ["Roboto Condensed", "sans-serif"].join(
-                              ","
-                            ),
-                          }}
-                        >
+                        <Typography sx={sxStyle}>
                           {item.podok?.title}
                           {"["}
                           {item.podokdate.slice(0, 4)}

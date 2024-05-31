@@ -1,4 +1,5 @@
 import { InputBase, Paper, TextareaAutosize, alpha, styled } from "@mui/material";
+import { sxStyle } from "../modules/pages/search/editsearch/PersonDetails";
 
  const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -21,18 +22,7 @@ import { InputBase, Paper, TextareaAutosize, alpha, styled } from "@mui/material
         ]),
         
         // Use the system font instead of the default Roboto font.
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
+        fontFamily: sxStyle.fontFamily,
         '&:focus': {
             boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
             borderColor: theme.palette.primary.main,

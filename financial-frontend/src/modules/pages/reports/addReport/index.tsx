@@ -7,6 +7,7 @@ import {
   Grid,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
   Toolbar,
@@ -34,6 +35,13 @@ import {
   initialValues,
   validationSchema,
 } from "../../../../utils/reportValidation";
+import { sxStyle } from "../../search/editsearch/PersonDetails";
+import SinglePreview from "../../gallery/gallaryPreview/signlePreview";
+import { title } from "process";
+import { useDispatch, useSelector } from "react-redux";
+import actions from "../../../../state/actions";
+import { RootState } from "../../../../state/reducer";
+import { toArray } from "lodash";
 
 const primry = {
   doron: "ধরণ বাছাই করুন",
@@ -43,10 +51,14 @@ const primry = {
   picture: [],
 };
 const AddReportScreen = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const { designations } = useDoronList();
-  const [reportData, setReportData] = React.useState<ReportDataItem>(primry);
+  const { fileProgress } = useSelector(
+    (state: RootState) => state.currentgallaryState
+  );
+
 
   const formik = useFormik({
     initialValues,
@@ -54,19 +66,25 @@ const AddReportScreen = () => {
     // validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      console.log(values);
-      setLoading(true);
       api.report
-        .setReport$(values)
+        .setReportbody$({
+          title: values.title,
+          body: values.body,
+          doron: values.doron,
+        })
         .pipe(
           doOnSubscribe(() => setLoading(true)),
           finalize(() => setLoading(false))
         )
         .subscribe({
-          next: async (report) => {
-            formik.resetForm();
-            setLoading(false);
-            alert("submit successfully");
+          next: async (res) => {
+            dispatch(actions.gallary.resetUploadFile());
+            dispatch(
+              actions.gallary.SaveUploadFile({
+                id: res.id,
+                files: values.picture,
+              })
+            );
           },
           error: (error: any) => {
             // console.log(error)
@@ -103,29 +121,43 @@ const AddReportScreen = () => {
   };
 
   // console.log('formik', formik.values)
+  const files = [...formik.values.picture];
 
+  const numberOfUploadedFileArr = toArray(fileProgress).filter(
+    (file) => file.progress === 100
+  );
+
+  const reset = () => {
+    setLoading(false);
+
+    dispatch(actions.gallary.resetUploadFile());
+    formik.resetForm();
+  };
+  
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid
         container
         spacing={2}
         sx={{
-          boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
+          boxShadow: 1,
           padding: 2,
         }}
       >
         <Grid item xs={12}>
           <FormControl>
-            <FormLabel>ক্যাটাগরি বাছাই</FormLabel>
+            <FormLabel sx={sxStyle} required>
+              ক্যাটাগরি বাছাই
+            </FormLabel>
             <Select
               id="doron"
               value={formik.values.doron + ""}
               label=""
               sx={{
                 width: "100%",
-                height: 30,
-                fontSize: 14,
+                height: 50,
                 backgroundColor: "white",
+                ...sxStyle,
               }}
               onChange={selectChange}
               error={
@@ -133,11 +165,15 @@ const AddReportScreen = () => {
               }
             >
               {designations.map((value) => (
-                <MenuItem value={value.title}>{value.title}</MenuItem>
+                <MenuItem sx={sxStyle} value={value.title}>
+                  {value.title}
+                </MenuItem>
               ))}
             </Select>
             {formik.errors.doron && (
-              <FormHelperText sx={{ color: "red" }}>
+              <FormHelperText
+                sx={{ color: "red", ...sxStyle, fontWeight: "100" }}
+              >
                 {formik.errors.doron}
               </FormHelperText>
             )}
@@ -145,8 +181,10 @@ const AddReportScreen = () => {
         </Grid>
         <Grid item xs={12}>
           <FormControl id="title" size="sm" color="primary">
-            <FormLabel>শিরোনাম</FormLabel>
-            <Input
+            <FormLabel sx={sxStyle} required>
+              শিরোনাম
+            </FormLabel>
+            <OutlinedInput
               id="title"
               placeholder="শিরোনাম"
               type="text"
@@ -157,10 +195,12 @@ const AddReportScreen = () => {
                 Boolean(formik.errors.title) && Boolean(formik.touched.title)
               }
               onChange={dataHandler}
-              variant="outlined"
+              sx={sxStyle}
             />
             {formik.errors.title && (
-              <FormHelperText sx={{ color: "red" }}>
+              <FormHelperText
+                sx={{ color: "red", ...sxStyle, fontWeight: "100" }}
+              >
                 {formik.errors.title}
               </FormHelperText>
             )}
@@ -168,11 +208,13 @@ const AddReportScreen = () => {
         </Grid>
         <Grid item xs={12}>
           <FormControl id="body" size="sm" color="primary">
-            <FormLabel>রিপোর্ট</FormLabel>
+            <FormLabel sx={sxStyle} required>
+              রিপোর্ট
+            </FormLabel>
             <Textarea
               placeholder={"লিখুন"}
               onChange={dataHandler}
-              // sx={{ fontWeight:'100' }}
+              sx={{ fontWeight: "100", ...sxStyle }}
               error={
                 Boolean(formik.errors.body) && Boolean(formik.touched.body)
               }
@@ -181,7 +223,9 @@ const AddReportScreen = () => {
             />
           </FormControl>
           {formik.errors.body && (
-            <FormHelperText sx={{ color: "red", marginTop: 1 }}>
+            <FormHelperText
+              sx={{ color: "red", ...sxStyle, fontWeight: "100", marginTop: 1 }}
+            >
               {formik.errors.body}
             </FormHelperText>
           )}
@@ -189,61 +233,76 @@ const AddReportScreen = () => {
         <Grid item xs={12}>
           <Toolbar
             variant="dense"
+            disableGutters
             sx={{
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
             }}
           >
-            <Typography>সংযুক্তি</Typography>
+            <Typography sx={sxStyle}>সংযুক্তি</Typography>
             <Button
               component="label"
               variant="contained"
               startIcon={<CloudUploadIcon />}
               href="#file-upload"
+              sx={sxStyle}
             >
               Upload files
               <VisuallyHiddenInput type="file" onChange={fileChange} multiple />
             </Button>
           </Toolbar>
           {formik.errors.picture && (
-            <FormHelperText sx={{ color: "red" }}>
+            <FormHelperText
+              sx={{ color: "red", ...sxStyle, fontWeight: "100" }}
+            >
               ফাইল বাছাই করুন
             </FormHelperText>
           )}
         </Grid>
-        {formik.values.picture.map((value) => (
-          <Grid item xs={12}>
-            <Toolbar
-              sx={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                borderBottom: 1,
-                borderColor: "grayText",
-              }}
-            >
-              <Box>
-                <Typography>{value.name}</Typography>
-              </Box>
-              <Box>
-                <Button onClick={() => DelFile(value.name)}>
-                  <DeleteOutlineIcon sx={{ color: "red" }} />
-                </Button>
-              </Box>
-            </Toolbar>
-          </Grid>
-        ))}
-        <Grid item xs={12}>
+        <SinglePreview direction={"report"} value={files} DelFile={DelFile} />
+        <Grid item xs={12} mt={2}>
           <LoadingButton
             loading={loading}
-            loadingPosition="start"
             color="secondary"
             variant="contained"
-            // onClick={formik.handleSubmit}
             type="submit"
+            sx={{
+              ...sxStyle,
+              display:
+                formik.values.picture.length > 0 &&
+                formik.values.picture.length === numberOfUploadedFileArr.length
+                  ? "none"
+                  : "unset",
+            }}
           >
-            SUBMIT REPORT
+            SUBMIT
           </LoadingButton>
+
+          {formik.values.picture.length > 0 &&
+            formik.values.picture.length === numberOfUploadedFileArr.length && (
+              <Toolbar
+                sx={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  boxShadow: 2,
+                  borderRadius: 2,
+                  p: 1,
+                }}
+              >
+                <Typography color={"green"} sx={sxStyle}>
+                  Upload Completed
+                </Typography>
+                <LoadingButton
+                  color="primary"
+                  variant="contained"
+                  onClick={() => reset()}
+                  sx={sxStyle}
+                >
+                  RESET
+                </LoadingButton>
+              </Toolbar>
+            )}
         </Grid>
       </Grid>
     </form>

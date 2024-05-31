@@ -21,6 +21,8 @@ import assets from "../../assets";
 import colorConfigs from "../../configs/colorConfigs";
 import Topbar from "../common/Topbar";
 import sizeConfigs from "../../configs/sizeConfigs";
+import { sxStyle } from "../../modules/pages/search/editsearch/PersonDetails";
+import { lineargradient } from "../../utils/config";
 
 const drawerWidth = 300;
 
@@ -28,7 +30,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
+    duration: theme.transitions.duration.complex,
   }),
   overflowX: "hidden",
 });
@@ -36,7 +38,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.complex,
   }),
   overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
@@ -50,9 +52,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  backgroundColor:"white",
+  backgroundColor: "white",
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
+  
 }));
 
 interface AppBarProps extends MuiAppBarProps {
@@ -64,6 +67,8 @@ const AppBar = styled(MuiAppBar, {
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   backgroundColor: colorConfigs.sidebar.activeBg,
+  width: `calc(${theme.spacing(8)} + 1px)`,
+  left: 0,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -96,7 +101,6 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function DrawerMainScreen() {
-  const { user } = useSelector((state: RootState) => state.currentUser);
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -115,7 +119,11 @@ export default function DrawerMainScreen() {
         <AppBar position="fixed" open={open}>
           <Toolbar
             disableGutters
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              background:lineargradient
+            }}
           >
             <Toolbar>
               <IconButton
@@ -135,6 +143,16 @@ export default function DrawerMainScreen() {
                 noWrap
                 component="div"
                 sx={{
+                  ...(!open && { display: "none" }),
+                  ...(open && {
+                    display: {
+                      xs: "none",
+                      sm: "none",
+                      md: "block",
+                      lg: "block",
+                      xl: "block",
+                    },
+                  }),
                   fontSize: {
                     xs: 14,
                     sm: 16,
@@ -143,34 +161,33 @@ export default function DrawerMainScreen() {
                     xl: 16,
                   },
                   fontWeight: "500",
-                  fontFamily: ["Roboto", "sans-serif"].join(","),
-                  display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "block",
-                    lg: "block",
-                    xl: "block",
-                  },
+                  fontFamily:sxStyle.fontFamily,
                 }}
               >
-               FINANCIAL INTELLIGENCE
+                FINANCIAL INTELLIGENCE MANAGEMENT SYSTEM (FIMS)
               </Typography>
             </Toolbar>
-
-            <Topbar />
+            <Toolbar
+              sx={{
+                ...(!open && { display: "none" }),
+              }}
+            >
+              <Topbar />
+            </Toolbar>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}
-         sx={{
-          
+        <Drawer
+          variant="permanent"
+          open={open}
+          sx={{
             flexShrink: 0,
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               borderRight: "0px",
-              backgroundColor: colorConfigs.sidebar.bg,
+              // backgroundColor: colorConfigs.sidebar.bg,
               color: colorConfigs.sidebar.color,
-    
-            }
+              background:lineargradient
+            },
           }}
         >
           <DrawerHeader>
@@ -193,7 +210,7 @@ export default function DrawerMainScreen() {
           <Sidebar />
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <DrawerHeader />
+          {open && <DrawerHeader />}
           <Routes>{routes}</Routes>
         </Box>
       </Box>

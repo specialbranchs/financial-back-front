@@ -1,4 +1,3 @@
-
 export type SignInData = {
   email: string;
   password: string;
@@ -8,9 +7,7 @@ export type SignUpData = {
   email: string;
   password: string;
   confirmPassword: string;
-
 };
-
 
 export type AppState = {
   appState: string;
@@ -22,37 +19,35 @@ export type SearchDataItem = {
   tinNumber: string;
   nid: string;
   podok: number;
-  child:number;
+  child: number;
   podokpost: string;
   start: string | null;
   end: string | null;
-
 };
 
 export type GallaryDataItem = {
   id: number;
-  event:string;
-  picture: File[]
-}
+  event: string;
+  picture: File[];
+};
 export type ReportDataItem = {
   id: number;
   doron: string;
   title: string;
   body: string;
-  picture: File[]
-}
-
+  picture: File[];
+};
 
 export type PersonFormData = {
   podok: number;
-  child:number;
+  child: number;
   podokdate: string;
   name: string;
   fatherName: string;
   motherName: string;
   nid: string;
   tinNumber: string;
-  picture: File|null;
+  picture: File | null;
 
   parmentAdd: string;
   presentAdd: string;
@@ -81,37 +76,43 @@ export type PersonFormData = {
   thanaRecord: string;
   influential: string;
   evaluation: string;
+};
 
-}
+export type ShowDataType = {
+  title: string;
+  display: string;
+  id: number;
+};
 
-export type ShowDataType={
-  title:string;
-  display:string;
-  id:number;
-  
-}
+export type UploadUserData = {
+  name: string;
+  email: string;
+  password: string;
+  is_admin: boolean;
+  is_staff: boolean;
+};
 
-export type UploadUserData={
-  name:string;
-  email:string;
-  password:string;
-  is_admin:boolean;
-  is_staff:boolean;
-}
-
-
-export type ResUserData={
-  id:number;
-  name:string;
-  email:string;
-  is_admin:boolean;
-  is_staff:boolean;
-  is_superuser:boolean;
-}
-export type ReportType={
+export type ResUserData = {
+  id: number;
+  name: string;
+  email: string;
+  is_admin: boolean;
+  is_staff: boolean;
+  is_superuser: boolean;
+};
+export type ReportType = {
   doron: string;
-  title:string;
+  title: string;
   body: string;
-  id: number,
+  id: number;
   picture: Array<any>;
-}
+};
+
+export type gallaryUploadData = {
+  id: number;
+  files: File[];
+};
+export type gallaryProgressData = {
+  id: number;
+  progress: number;
+};

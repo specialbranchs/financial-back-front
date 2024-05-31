@@ -9,6 +9,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
+  
    const { currentUser } = store.getState()
    const {user}=currentUser
   //  console.log('user',user)
@@ -32,5 +33,7 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+
 
 export default {axiosInstance}
