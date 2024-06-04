@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.c7c0a41a.css",
-    "main.js": "/static/js/main.9477b238.js",
+    "main.js": "/static/js/main.e2cedec3.js",
     "static/media/Logo.jpg": "/static/media/Logo.f585f7adfe4ab5cc269c.jpg",
     "static/media/KohinoorBangla-Regular.otf": "/static/media/KohinoorBangla-Regular.d4aa8847efd232643140.otf",
     "static/media/user.png": "/static/media/user.8d49e377c7c342895ec2.png",
     "index.html": "/index.html",
     "main.c7c0a41a.css.map": "/static/css/main.c7c0a41a.css.map",
-    "main.9477b238.js.map": "/static/js/main.9477b238.js.map"
+    "main.e2cedec3.js.map": "/static/js/main.e2cedec3.js.map"
   },
   "entrypoints": [
     "static/css/main.c7c0a41a.css",
-    "static/js/main.9477b238.js"
+    "static/js/main.e2cedec3.js"
   ]
 }

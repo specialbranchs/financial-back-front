@@ -18,6 +18,9 @@ import { doOnSubscribe } from "../../../../utils/rxjs.utils";
 import { finalize } from "rxjs/operators";
 import { sxStyle } from "../../search/editsearch/PersonDetails";
 import { DeleteOutline } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../state/reducer";
+import { bolToRole } from "../../../../utils/convertions";
 
 export const style = {
   position: "fixed",
@@ -33,8 +36,11 @@ export const style = {
 type props = {
   report: ReportResponseData;
 };
-const ReportList = ({ report }: props): any => {
+const ReportList = ({ report }: props) => {
+  const user = useSelector((state: RootState) => state.currentUser.user);
   const [fileShow, setFileshow] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [reportData, setreportData] = useState<ReportResponseData>(report);
   const [fileStatus, setfileStatus] = useState<any>({
     file: "",
     type: "",
@@ -43,7 +49,30 @@ const ReportList = ({ report }: props): any => {
   const handleOpen = () => setmodalfull(true);
   const handleClose = () => setmodalfull(false);
   const [modalItem, setModalItem] = React.useState({ title: "", body: "" });
-
+  const deleteFile = (id: number) => {
+    api.report
+      .deleteReportFile(id)
+      .pipe(
+        doOnSubscribe(() => {}),
+        finalize(() => {})
+      )
+      .subscribe({
+        next: async (res) => {
+          const reportTempData = [...reportData];
+          for (let i in reportTempData) {
+            for (let j in reportTempData[i].user_report) {
+              if (reportTempData[i].user_report[j].id === id) {
+                delete reportTempData[i].user_report[j];
+              }
+            }
+          }
+          setreportData(reportTempData);
+        },
+        error: (error: any) => {
+          // console.log(error)
+        },
+      });
+  };
   const download = (url: string) => {
     const type = url.split(".").pop();
     var filename = url.replace(/^.*[\\/]/, "");
@@ -67,9 +96,10 @@ const ReportList = ({ report }: props): any => {
         },
       });
   };
+ 
   return (
     <>
-      {report.map((item) => (
+      {reportData.map((item) => (
         <Card
           variant="solid"
           key={item.id}
@@ -98,7 +128,7 @@ const ReportList = ({ report }: props): any => {
                   marginBottom: 2,
                 }}
               >
-                {item.body.slice(0, 200)}     {"   "} 
+                {item.body.slice(0, 200)} {"   "}
                 {item.body.length > 200 && (
                   <Typography
                     component={"span"}
@@ -116,7 +146,7 @@ const ReportList = ({ report }: props): any => {
                       });
                     }}
                   >
-                show details
+                    show details
                   </Typography>
                 )}
               </Typography>
@@ -173,9 +203,16 @@ const ReportList = ({ report }: props): any => {
                         />
                       </Button>
                     </a>
-                    <Button size="sm" sx={{ marginLeft: 3 }} variant="soft">
-                      <DeleteOutline fontSize={"small"} color="error" />
-                    </Button>
+                    {(bolToRole(user) === 7 || bolToRole(user) === 6) && (
+                      <Button
+                        onClick={() => deleteFile(value.id)}
+                        size="sm"
+                        sx={{ marginLeft: 3 }}
+                        variant="soft"
+                      >
+                        <DeleteOutline fontSize={"small"} color="error" />
+                      </Button>
+                    )}
                   </Box>
                 </Toolbar>
               ))}
@@ -189,6 +226,7 @@ const ReportList = ({ report }: props): any => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        hideBackdrop={true}
       >
         <Box sx={style}>
           <Button onClick={handleClose} variant="soft">
@@ -204,7 +242,7 @@ const ReportList = ({ report }: props): any => {
                     color: "#0a355f",
                     fontWeight: "bold",
 
-                    fontFamily: ["Roboto Condensed", "sans-serif"].join(","),
+                    fontFamily: sxStyle.fontFamily,
                   }}
                 >
                   {modalItem.title}
@@ -226,7 +264,7 @@ const ReportList = ({ report }: props): any => {
 
       <Modal
         // sx={{ overflow: 'auto' }}
-
+        hideBackdrop={true}
         open={fileShow}
         onClose={() => setFileshow(false)}
         aria-labelledby="modal-modal-title"

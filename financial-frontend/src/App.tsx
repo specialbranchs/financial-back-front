@@ -1,6 +1,4 @@
-import React from "react";
-import { Provider, useSelector } from "react-redux";
-import { RootState } from "./state/reducer";
+import { Provider } from "react-redux";
 import { persistor, store } from "./state";
 import { PersistGate } from "redux-persist/integration/react";
 import NavMainScreen from "./modules/navDir";

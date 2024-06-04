@@ -7,6 +7,8 @@ import useDesignation from "../../../../hooks/useCatagoris";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import FormControl from "@mui/joy/FormControl";
 import { sxStyle } from "../../search/editsearch/PersonDetails";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../state/reducer";
 
 type Props = {
   id: string;
@@ -25,6 +27,9 @@ const SelectProps = ({
   error,
 }: Props) => {
   const { designations } = useDesignation();
+  const { catagories } = useSelector(
+    (state: RootState) => state.currentcatagoryState
+  );
   return (
     <FormControl id={id} size="sm" error={error} color="primary">
       <Select
@@ -41,7 +46,7 @@ const SelectProps = ({
           },
         }}
       >
-        {designations.map((item) => (
+        {catagories.map((item) => (
           <Option sx={sxStyle} key={item.id} value={item.id}>
             {item.title}
           </Option>

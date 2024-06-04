@@ -7,10 +7,11 @@ import SidebarItem from "./SidebarItem";
 import SidebarItemCollapse from "./SidebarItemCollapse";
 import appRoutes from "../../routes/appRoutes";
 import { AccessUser } from "../../utils/directUser";
+import AppRoutesData from "../../routes/appRoutes";
 
 const Sidebar = () => {
   const user = AccessUser();
-
+  const {appRoutes} =AppRoutesData()
   return (
     <List disablePadding>
       {appRoutes.map((route, index) =>

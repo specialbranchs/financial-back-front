@@ -8,12 +8,12 @@ import rootReducer from '../state/reducer';
 const persistConfig:any = {
   key: 'root',
   storage: storage,
-  whitelist: ['currentUser']
+  // whitelist: ['currentUser']
 };
 
 export const store = createStore(
   persistReducer(persistConfig, rootReducer),
- composeWithDevTools(applyMiddleware(logger))
+//  composeWithDevTools(applyMiddleware(logger))
 );
 
 export const persistor = persistStore(store);

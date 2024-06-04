@@ -3,6 +3,7 @@ export type User = {
   refresh: string;
   access: string;
   email: string;
+  name:string;
   is_superuser:boolean;
   is_adminuser:boolean;
   is_staff:boolean;

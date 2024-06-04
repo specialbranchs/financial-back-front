@@ -48,7 +48,7 @@ const EditPersonDetails = ({ person, reRender }: props) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-       
+        hideBackdrop={true}
       >
         <Box sx={style}>
           <Button

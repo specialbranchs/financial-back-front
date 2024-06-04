@@ -17,6 +17,7 @@ urlpatterns = [
     # path('reportAdd', AddReportApiView.as_view()),
     path('reportbodyAdd',AddReportBodyApiView.as_view()),
     path('reportfileAdd',AddReportFileApiView.as_view()),
+    path('deleteFile',DeleteFileApiView.as_view()),
     path('report_get', getReportApiView.as_view()),
     path('podok_get', PodokNameApiView.as_view()),
     path('podokAdd', PodokUpdateApiView.as_view()),
@@ -31,6 +32,8 @@ urlpatterns = [
     path('gallary_add',AddGallaryApiView.as_view()),
     path('gallary_get', getGallaryApiView.as_view()),
     path('single_gallary_Add',AddGallaryApiView.as_view()),
+  
+    path('change-password',changePassword.as_view()),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 

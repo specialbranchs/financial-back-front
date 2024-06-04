@@ -115,12 +115,13 @@ const EditPodokDetails = ({ person, podokList, reRender }: props) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        hideBackdrop={true}
       >
         <Box sx={style}>
           <Button
             onClick={handleClose}
             variant="soft"
-            sx={{ fontWeight: "100" }}
+            sx={{ fontWeight: "100",...sxStyle }}
             size="sm"
           >
             CLOSE
@@ -128,7 +129,7 @@ const EditPodokDetails = ({ person, podokList, reRender }: props) => {
           <Toolbar
             sx={{
               flexDirection: "column",
-              boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
+              boxShadow: 1,
               padding: "6px",
             }}
           >
@@ -137,32 +138,36 @@ const EditPodokDetails = ({ person, podokList, reRender }: props) => {
             </Typography>
             <Box m={1}>
               <FormControl sx={{ m: 1, minWidth: 260 }}>
-                <InputLabel id="podok">ক্যাটাগরি</InputLabel>
+                <InputLabel id="podok" sx={sxStyle}>ক্যাটাগরি</InputLabel>
                 <Select
                   labelId="podok"
                   id="podok"
                   value={searchData.podok}
                   label="পদক"
                   onChange={selectChange}
+                  sx={sxStyle}
+                  size="small"
                 >
                   {podokList.map((value) => (
-                    <MenuItem value={value.id}>{value.title}</MenuItem>
+                    <MenuItem sx={sxStyle} value={value.id} >{value.title}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Box>
             <Box m={1}>
               <FormControl sx={{ m: 1, minWidth: 260 }}>
-                <InputLabel id="podok">উপ-ক্যাটাগরি</InputLabel>
+                <InputLabel id="podok" sx={sxStyle}>উপ-ক্যাটাগরি</InputLabel>
                 <Select
                   labelId="podok"
                   id="podok"
                   value={searchData.child}
                   label="পদক"
                   onChange={childSelectChange}
+                  sx={sxStyle}
+                  size="small"
                 >
                   {designations.map((value) => (
-                    <MenuItem value={value.id}>{value.title}</MenuItem>
+                    <MenuItem sx={sxStyle} value={value.id}>{value.title}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -172,6 +177,8 @@ const EditPodokDetails = ({ person, podokList, reRender }: props) => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label=" গ্রহণের সাল"
+                  sx={sxStyle}
+                  
                   onChange={(newValue: Dayjs | null) => {
                     if (newValue) {
                       setSearchData({
@@ -192,6 +199,7 @@ const EditPodokDetails = ({ person, podokList, reRender }: props) => {
               color="primary"
               variant="contained"
               onClick={() => submit()}
+              sx={sxStyle}
             >
               UPDATE
             </LoadingButton>

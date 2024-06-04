@@ -103,18 +103,19 @@ const Login = (props: any) => {
           <Avatar src={assets.images.logo} sx={{ height: 200, width: 200 }} />
         </Box>
         <Box>
-          <Typography color={"red"}>{error}</Typography>
+          <Typography color={"red"} sx={sxStyle}>{error}</Typography>
         </Box>
         <form
           style={{ flexDirection: "column", display: "flex", width: "40%" }}
           onSubmit={formik.handleSubmit}
         >
-          <FormControl sx={{ marginTop: 5 }}>
+          <FormControl sx={{ marginTop: 5,...sxStyle }}>
             <TextField
               fullWidth
               id="email"
               name="email"
               label="Email"
+              sx={sxStyle}
               value={formik.values.email}
               onChange={formik.handleChange}
               error={formik.touched.email && Boolean(formik.errors.email)}
@@ -131,6 +132,7 @@ const Login = (props: any) => {
               variant="outlined"
               type={showPassword ? "text" : "password"}
               className=""
+              sx={sxStyle}
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}

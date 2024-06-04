@@ -85,4 +85,23 @@ const setreportFile = (files: any) => {
   }
 };
 
-export default { searchReportList$, setReportbody$, genReport$, setreportFile };
+const deleteReportFile = (id: number): Observable<any> => {
+  return client
+    .post<any>("deleteFile", {
+      id: id,
+    })
+    .pipe(
+      map((response) => {
+        const responseData = response.data;
+        return responseData;
+      })
+    );
+};
+
+export default {
+  searchReportList$,
+  setReportbody$,
+  genReport$,
+  setreportFile,
+  deleteReportFile,
+};

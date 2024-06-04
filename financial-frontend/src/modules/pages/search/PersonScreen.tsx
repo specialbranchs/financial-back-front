@@ -23,6 +23,8 @@ import useDesignation from "../../../hooks/useCatagoris";
 import BootstrapInput from "../../../utils/textFieldStyle";
 import useChildDoronList from "../../../hooks/useChildDoron";
 import { sxStyle } from "./editsearch/PersonDetails";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/reducer";
 //import * as types from '../../../../typings/formData';
 
 type searchDataType = {
@@ -40,8 +42,10 @@ type searchDataType = {
 const PersonScreen = () => {
   const [loading, setLoading] = useState(false);
   const [personList, setpersonList] = useState<SearchInResponseData[]>([]);
-  const { designations } = useDesignation();
-
+  const dsns = useDesignation();
+  const { catagories } = useSelector(
+    (state: RootState) => state.currentcatagoryState
+  );
   const [searchData, setSearchData] = React.useState<searchDataType>({
     name: "",
     fatherName: "",
@@ -186,7 +190,9 @@ const PersonScreen = () => {
         </FormControl>
 
         <FormControl>
-          <InputLabel id="podok" sx={sxStyle}>ক্যাটাগরি</InputLabel>
+          <InputLabel id="podok" sx={sxStyle}>
+            ক্যাটাগরি
+          </InputLabel>
           <Select
             labelId="podok"
             id="podok"
@@ -199,11 +205,11 @@ const PersonScreen = () => {
               marginRight: 2,
               fontWeight: "100",
               color: "GrayText",
-              fontFamily:sxStyle.fontFamily,
+              fontFamily: sxStyle.fontFamily,
             }}
             onChange={selectChange}
           >
-            {designations.map((value) => (
+            {catagories.map((value) => (
               <MenuItem key={value.id} value={value.id} sx={sxStyle}>
                 {value.title}
               </MenuItem>
@@ -211,7 +217,9 @@ const PersonScreen = () => {
           </Select>
         </FormControl>
         <FormControl>
-          <InputLabel id="podok" sx={sxStyle}>উপ-ক্যাটাগরি</InputLabel>
+          <InputLabel id="podok" sx={sxStyle}>
+            উপ-ক্যাটাগরি
+          </InputLabel>
           <Select
             labelId="podok"
             id="podok"
@@ -224,7 +232,7 @@ const PersonScreen = () => {
               marginRight: 2,
               fontWeight: "100",
               color: "GrayText",
-              fontFamily:sxStyle.fontFamily
+              fontFamily: sxStyle.fontFamily,
             }}
             onChange={selectChildChange}
           >
@@ -308,7 +316,7 @@ const PersonScreen = () => {
       ) : (
         <PersonTable
           personlist={personList}
-          podokList={designations}
+          podokList={catagories}
           reRender={refreshBtn}
         />
       )}

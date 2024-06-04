@@ -2,7 +2,7 @@ export const BACKEND_URL=!process.env.NODE_ENV || process.env.NODE_ENV === 'deve
 export const BACKEND_BASE=`${BACKEND_URL}/api`
 export const PASSWORD_MIN_LENGTH=6
 
-
+export const MilTMin=60000
 
 export const PODOK="podok"
 export const PODOKDATE='podokdate'

@@ -1,3 +1,5 @@
+import { number } from "yup";
+
 export type SignInData = {
   email: string;
   password: string;
@@ -115,4 +117,20 @@ export type gallaryUploadData = {
 export type gallaryProgressData = {
   id: number;
   progress: number;
+};
+export type ChangePassword = {
+  id: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmnewPassword: string;
+};
+
+export type DoronType = {
+  id: number;
+  title: string;
+};
+
+export type CatagoryType = {
+  id: number;
+  title: string;
 };

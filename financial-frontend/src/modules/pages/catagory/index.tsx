@@ -22,14 +22,18 @@ import SubCatagory from "./subCatagory";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/reducer";
 import { sxStyle } from "../search/editsearch/PersonDetails";
+import { bolToRole } from "../../../utils/convertions";
 
 const CatagoryScreen = () => {
   const { user } = useSelector((state: RootState) => state.currentUser);
 
   const [loading, setLoading] = useState(false);
   const [podokName, setPodokName] = useState("");
-  const { designations } = useDesignation();
-  const [podokList, setPodokList] = useState<Array<Designation>>(designations);
+  const dsns = useDesignation();
+  const { catagories } = useSelector(
+    (state: RootState) => state.currentcatagoryState
+  );
+  const [podokList, setPodokList] = useState<Array<Designation>>(catagories);
 
   const [modalfull, setmodalfull] = useState<boolean>(false);
 
@@ -46,8 +50,8 @@ const CatagoryScreen = () => {
     setPodokName(e.target.value);
   };
   useEffect(() => {
-    setPodokList(designations);
-  }, [designations]);
+    setPodokList(catagories);
+  }, [catagories]);
 
   const Submit = () => {
     setLoading(true);
@@ -174,7 +178,7 @@ const CatagoryScreen = () => {
             sx={{
               flexDirection: "row",
               justifyContent: "space-between",
-             boxShadow:1,
+              boxShadow: 1,
               borderRadius: 2,
               padding: 1,
               marginY: 1,
@@ -191,9 +195,9 @@ const CatagoryScreen = () => {
                   {value.title}
                 </Typography>
               </ListItemButton>
-              <SubCatagory id={value.id} text={text} />
+              <SubCatagory id={value.id} role={bolToRole(user)} />
             </Box>
-            {(user?.is_superuser || user?.is_adminuser) && (
+            {(bolToRole(user) === 7 || bolToRole(user) === 6) && (
               <Box>
                 <Button
                   onClick={() => DelCat(value.id)}
@@ -213,6 +217,7 @@ const CatagoryScreen = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        hideBackdrop={true}
       >
         <Box sx={style}>
           <Button

@@ -55,10 +55,10 @@ const AddReportScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const { designations } = useDoronList();
+  const { dorons } = useSelector((state: RootState) => state.currentdoronState);
   const { fileProgress } = useSelector(
     (state: RootState) => state.currentgallaryState
   );
-
 
   const formik = useFormik({
     initialValues,
@@ -133,7 +133,7 @@ const AddReportScreen = () => {
     dispatch(actions.gallary.resetUploadFile());
     formik.resetForm();
   };
-  
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid
@@ -164,7 +164,7 @@ const AddReportScreen = () => {
                 Boolean(formik.errors.doron) && Boolean(formik.touched.doron)
               }
             >
-              {designations.map((value) => (
+              {dorons.map((value) => (
                 <MenuItem sx={sxStyle} value={value.title}>
                   {value.title}
                 </MenuItem>

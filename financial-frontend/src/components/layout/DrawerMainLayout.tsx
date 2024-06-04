@@ -11,18 +11,17 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { useSelector } from "react-redux";
-import { RootState } from "../../state/reducer";
 import Sidebar from "../common/Sidebar";
-import { routes } from "../../routes";
+
 import { Routes, HashRouter } from "react-router-dom";
 import { Avatar, Stack } from "@mui/material";
 import assets from "../../assets";
 import colorConfigs from "../../configs/colorConfigs";
 import Topbar from "../common/Topbar";
-import sizeConfigs from "../../configs/sizeConfigs";
 import { sxStyle } from "../../modules/pages/search/editsearch/PersonDetails";
 import { lineargradient } from "../../utils/config";
+import { generateRoute } from "../../routes";
+import AppRoutesData from "../../routes/appRoutes";
 
 const drawerWidth = 300;
 
@@ -101,6 +100,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function DrawerMainScreen() {
+  const {appRoutes}=AppRoutesData()
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -211,7 +211,7 @@ export default function DrawerMainScreen() {
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           {open && <DrawerHeader />}
-          <Routes>{routes}</Routes>
+          <Routes>{generateRoute(appRoutes)}</Routes>
         </Box>
       </Box>
     </HashRouter>

@@ -371,6 +371,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['email'] = user.email
+        token['name']=user.name
         token['is_superuser']=user.is_superuser
         token['is_adminuser']=user.is_admin
         token['is_staff']=user.is_staff
@@ -506,3 +507,34 @@ class setSingleGallay(APIView):
     def post(self,request):
         print(request.data['id'])
         return Response({"data":1})
+    
+
+
+class changePassword(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self,request):
+        id=request.data['id']
+        currentPassword=request.data['currentPassword']
+        newPassword=request.data['newPassword']
+        user=User.objects.get(pk=id)
+        if user.check_password(currentPassword):
+            user.set_password(newPassword)
+            user.save()
+            return Response({'data':True})
+        
+        
+        return Response({'data':False})           
+    
+
+class DeleteFileApiView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        id=request.data['id']
+        try :
+            file=ReportFile.objects.get(pk=id)
+            if len(file.picture)>0:
+                os.remove(file.picture.path)
+            file.delete()
+            return Response({"data":'successfully Deleted','error':False})
+        except ReportFile.DoesNotExist:
+            return Response({"data":'Data not Found','error':True})
