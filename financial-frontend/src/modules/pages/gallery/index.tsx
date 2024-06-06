@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Avatar,
@@ -58,11 +58,11 @@ const GalleryScreen = () => {
         .setGallaryEventName(values.event)
         .pipe(
           doOnSubscribe(() => setLoading(true)),
-          finalize(() => setLoading(false))
+          finalize(() => {})
         )
         .subscribe({
           next: async (res) => {
-           // console.log("res", res);
+            // console.log("res", res);
             dispatch(actions.gallary.resetUploadFile());
             dispatch(
               actions.gallary.SaveUploadFile({
@@ -115,12 +115,17 @@ const GalleryScreen = () => {
     dispatch(actions.gallary.resetUploadFile());
     formik.resetForm();
   };
+  useEffect(() => {
+    return () => {
+      dispatch(actions.gallary.resetUploadFile());
+    };
+  }, []);
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid
         container
         sx={{
-          boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important;",
+          boxShadow:1,
           padding: 2,
           borderRadius: 3,
         }}
@@ -199,7 +204,11 @@ const GalleryScreen = () => {
             )}
           </Grid>
         </Grid>
-        <SinglePreview direction={'gallary'} value={formik.values.picture} DelFile={DelFile} />
+        <SinglePreview
+          direction={"gallary"}
+          value={formik.values.picture}
+          DelFile={DelFile}
+        />
 
         <Grid item xs={12} mt={2}>
           <LoadingButton

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useDoronList from "../../../../hooks/useDoron";
 import { ReportDataItem } from "../../../../../typings/formData";
 import {
@@ -74,7 +74,7 @@ const AddReportScreen = () => {
         })
         .pipe(
           doOnSubscribe(() => setLoading(true)),
-          finalize(() => setLoading(false))
+          finalize(() => {})
         )
         .subscribe({
           next: async (res) => {
@@ -133,6 +133,12 @@ const AddReportScreen = () => {
     dispatch(actions.gallary.resetUploadFile());
     formik.resetForm();
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(actions.gallary.resetUploadFile());
+    };
+  }, []);
 
   return (
     <form onSubmit={formik.handleSubmit}>
