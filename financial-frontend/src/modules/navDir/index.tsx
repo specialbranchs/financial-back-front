@@ -55,7 +55,7 @@ function NavMainScreen() {
   };
   useEffect(() => {
     refreshToken();
-    let interval = setInterval(refreshToken, MilTMin * 6);
+    let interval = setInterval(refreshToken, MilTMin * 25);
     return () => clearInterval(interval);
   }, []);
   return user ? <DrawerMainScreen /> : <AuthHomeScreen />;
