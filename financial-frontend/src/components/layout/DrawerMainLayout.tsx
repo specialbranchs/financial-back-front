@@ -13,7 +13,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Sidebar from "../common/Sidebar";
 
-import { Routes, BrowserRouter } from "react-router-dom";
+import { Routes, HashRouter } from "react-router-dom";
 import { Avatar, Stack } from "@mui/material";
 import assets from "../../assets";
 import colorConfigs from "../../configs/colorConfigs";
@@ -113,7 +113,7 @@ export default function DrawerMainScreen() {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
@@ -214,6 +214,6 @@ export default function DrawerMainScreen() {
           <Routes>{generateRoute(appRoutes)}</Routes>
         </Box>
       </Box>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
