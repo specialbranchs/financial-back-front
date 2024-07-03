@@ -1,4 +1,5 @@
- RewriteEngine On
+  Options -MultiViews
+  RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
