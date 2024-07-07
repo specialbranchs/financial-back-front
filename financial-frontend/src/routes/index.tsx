@@ -9,6 +9,7 @@ export const generateRoute = (routes: RouteType[]): ReactNode => {
     route.index ? (
       <Route
         index
+        
         path={route.path}
         element={<PageWrapper state={route.state}>
           {route.element}

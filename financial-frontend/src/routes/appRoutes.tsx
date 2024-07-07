@@ -211,7 +211,7 @@ const makeRoute = (user: User | null) => {
       ],
     },
     {
-      path: "/admin",
+      path: "/access",
       element: <AdminScreen />,
       state: "admin",
       sidebarProps: {
