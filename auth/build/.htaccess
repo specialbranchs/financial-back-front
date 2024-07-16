@@ -1,4 +1,4 @@
-
+<IfModule mod_rewrite.c>
     RewriteEngine on
 
     # Remove www from the URL (Important for SEO)
@@ -17,3 +17,4 @@
     RewriteRule ^(.*[^/])$ /$1/index.html [L]
     
     ErrorDocument 404 /404.html
+</IfModule>
