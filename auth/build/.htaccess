@@ -1,9 +1,20 @@
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule . /index.html [L]
+    RewriteEngine on
+
+    # Remove www from the URL (Important for SEO)
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ http://%1%{REQUEST_URI} [R=301,QSA,NC,L]
+    
+    # Redirect root to /en if language is not provided (Remove this line if you do not have multilang).
+    RewriteRule ^/?$ /en [R=301,L]
+    
+    # Redirect the url to the same url without trailing slash
+    RewriteRule %{REQUEST_FILENAME} -d
+    RewriteRule (.+)/$ /$1 [R=301,L]
+    
+    # Open index.html file in the directory
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^(.*[^/])$ /$1/index.html [L]
+    
+    ErrorDocument 404 /404.html
 </IfModule>
