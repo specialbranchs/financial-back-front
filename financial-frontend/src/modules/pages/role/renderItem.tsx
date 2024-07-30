@@ -8,7 +8,9 @@ const RenderItem = ({ row }: any) => {
     edit: false,
     view: false,
   });
-  const submit = () => {};
+  const submit = () => {
+    
+  };
   console.log(obj);
   return (
     <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
