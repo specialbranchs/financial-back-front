@@ -33,6 +33,7 @@ import assets from "../../../assets";
 import React from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { sxStyle } from "../../pages/search/editsearch/PersonDetails";
+import { User } from "../../../../typings/structures";
 
 const Login = (props: any) => {
   const [loading, setLoading] = useState(false);
@@ -72,14 +73,31 @@ const Login = (props: any) => {
           finalize(() => setLoading(false))
         )
         .subscribe({
-          next: async (user) => {
-            formik.resetForm();
-            dispatch(actions.user.saveUser(user));
-            seterror("");
+          next: async (userRs) => {
+            const { data, token } = userRs;
+            console.log(userRs)
+            if (data) {
+              const user: User = {
+                id: data.id,
+                refresh: token,
+                access: token,
+                email: data.email,
+                name: data.name,
+                is_superuser: data.is_superuser,
+                is_adminuser: data.is_admin,
+                is_staff: data.is_staff,
+              };
+              formik.resetForm();
+              dispatch(actions.user.saveUser(user));
+              seterror("");
+            } else {
+              seterror("User Not Found");
+            }
+
             setLoading(false);
           },
           error: (error: any) => {
-            seterror(error?.response?.data?.detail);
+            seterror("User Not Found");
             setLoading(false);
           },
         });
@@ -103,13 +121,15 @@ const Login = (props: any) => {
           <Avatar src={assets.images.logo} sx={{ height: 200, width: 200 }} />
         </Box>
         <Box>
-          <Typography color={"red"} sx={sxStyle}>{error}</Typography>
+          <Typography color={"red"} sx={sxStyle}>
+            {error}
+          </Typography>
         </Box>
         <form
           style={{ flexDirection: "column", display: "flex", width: "40%" }}
           onSubmit={formik.handleSubmit}
         >
-          <FormControl sx={{ marginTop: 5,...sxStyle }}>
+          <FormControl sx={{ marginTop: 5, ...sxStyle }}>
             <TextField
               fullWidth
               id="email"

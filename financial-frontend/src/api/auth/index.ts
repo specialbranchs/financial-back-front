@@ -17,28 +17,16 @@ type SignInResponseData = {
   refresh: string;
 };
 
-const signInRequest$ = (data: SignInData): Observable<User> =>
+const signInRequest$ = (data: SignInData): Observable<any> =>
   client
-    .post<SignInResponseData>("token/", {
+    .post<any>("token/", {
       email: data.email,
       password: data.password,
     })
     .pipe(
       map((response) => {
-        const detail: any = jwtDecode(response.data.access);
-        // console.log('any',detail)
-        const user: User = {
-          id: detail.user_id,
-          refresh: response.data.refresh,
-          access: response.data.access,
-          email: detail.email,
-          name:detail.name,
-          is_superuser: detail.is_superuser,
-          is_adminuser: detail.is_adminuser,
-          is_staff: detail.is_staff,
-        };
-
-        return user;
+        const data = response.data;
+        return data;
       })
     );
 
@@ -92,21 +80,21 @@ const delUser$ = (id: number): Observable<any> =>
       })
     );
 
-    const ResetPassword = (data: ChangePassword): Observable<any> =>
-      client.post<any>('change-password', data).pipe(
-        map(response => {
-          // console.log('res', response.data)
-          const responseData = response.data;
-    
-          return responseData;
-        }),
-      );
-      
+const ResetPassword = (data: ChangePassword): Observable<any> =>
+  client.post<any>("change-password", data).pipe(
+    map((response) => {
+      // console.log('res', response.data)
+      const responseData = response.data;
+
+      return responseData;
+    })
+  );
+
 export default {
   signInRequest$,
   signUpRequest$,
   TokenRefresh$,
   userList$,
   delUser$,
-  ResetPassword
+  ResetPassword,
 };
