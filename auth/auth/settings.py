@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if DEBUG:
+if  DEBUG:
   DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -139,13 +139,12 @@ STATIC_URL = '/static/'  #ok
 MEDIA_URL = '/media/'
 
 
-if DEBUG:
+# if DEBUG:
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'build', 'static')]
 
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# else:
 
-else:
-
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
