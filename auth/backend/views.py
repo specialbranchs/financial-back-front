@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 
 from backend.decorator import unauthenticated_user
-from .serializers import UserSerializer
+from .serializers import UserLoginSerializer, UserSerializer
 from .serializerperson import (ChildPodokNameSerializer, 
                                DoronNameSerializer, GallaryEventNameSerializer, GallaryPicturesSerializer, PersonSerializer, 
                                PodokNameCountSerializer, ReportCountSerializer, ReportFileSerializer, 
@@ -538,3 +538,38 @@ class DeleteFileApiView(APIView):
             return Response({"data":'successfully Deleted','error':False})
         except ReportFile.DoesNotExist:
             return Response({"data":'Data not Found','error':True})
+        
+
+
+from rest_framework.authtoken.models import Token
+from rest_framework import status
+
+class TokenAuthnticationApiView(APIView):
+     def post(self, request, *args, **kargs):
+            response = {
+                "data":None,
+                'success': False,
+                'token':None
+            }
+            email=request.data['email']
+            password=request.data['password']
+            # print(userlist)
+            user=User.objects.get(email=email)
+            if user is None:
+                return Response(response, status=status.HTTP_200_OK)
+            
+            if not user.check_password(password):
+                return Response(response, status=status.HTTP_200_OK)
+                     
+            
+            token, created = Token.objects.get_or_create(user=user)
+            serializers = UserLoginSerializer(user)
+                # print(serializers.data)
+            response = { 
+                'success': True,
+                'data':serializers.data,
+                'token': token.key
+            }
+            return Response(response, status=status.HTTP_200_OK)
+          
+       

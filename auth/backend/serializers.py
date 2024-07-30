@@ -16,3 +16,14 @@ class UserSerializer(serializers.ModelSerializer):
         
         isinstance.save()    
         return isinstance    
+
+
+
+class UserLoginSerializer(serializers.ModelSerializer):
+    id = serializers.PrimaryKeyRelatedField(read_only=True)
+    email = serializers.CharField(read_only=True)
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = '__all__'

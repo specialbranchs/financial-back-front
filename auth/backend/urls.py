@@ -34,8 +34,9 @@ urlpatterns = [
     path('single_gallary_Add',AddGallaryApiView.as_view()),
   
     path('change-password',changePassword.as_view()),
-    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/', TokenAuthnticationApiView.as_view(), name='token_obtain_pair'),
+    # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
 
 

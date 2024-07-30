@@ -4,6 +4,11 @@ const upload = () => {
     alert('পদক বাছাই করুন')
     return
   }
+  var podokdate = document.getElementById(PODOKDATE).value
+  if (!podokdate) {
+    alert('পদকের সাল বাছাই করুন')
+    return
+  }
   var name = document.getElementById(NAME).value
   var fatherName = document.getElementById(FATHERNAME).value
   var motherName = document.getElementById(MOTHERNAME).value
@@ -57,6 +62,7 @@ const upload = () => {
     formData.append('picture', null);
 
   formData.append(PODOK, podok);
+  formData.append(PODOKDATE, podokdate)
   formData.append('name', name);
   formData.append('fatherName', fatherName);
   formData.append('motherName', motherName);
@@ -110,6 +116,12 @@ const upload = () => {
 
   var csrfToken = document.cookie.split('=')[1]
 
+  let divenabled = document.getElementById('div-enabled')
+  let divdisabled = document.getElementById('div-disabled')
+
+  addClass(divenabled, 'd-none')
+  removeClass(divdisabled, 'd-none')
+
   axios.post(`${API_URL}/personAdd`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -125,7 +137,12 @@ const upload = () => {
     .then(res => {
       console.log(res.data)
       //  console.log(res.data.url)
+      removeClass(divenabled, 'd-none')
+      addClass(divdisabled, 'd-none')
       alert('succefully inserted')
+    }).catch(res => {
+      removeClass(divenabled, 'd-none')
+      addClass(divdisabled, 'd-none')
     })
 }
 
@@ -151,6 +168,7 @@ const searchItem = () => {
     start: start,
     end: end
   }
+  LoadingSpinner()
   axios.post(`${API_URL}/person`,
     jsonData
     , {
@@ -163,18 +181,19 @@ const searchItem = () => {
           (progressEvent.loaded * 100) / progressEvent.total
         );
         console.log(`upload process: ${percentCompleted}%`);
+       
       }
     })
     .then(res => {
       console.log('res', res.data)
       if (res.data.length != 0) {
 
-        renderVerificationList(res.data)
+         renderVerificationList(res.data)
         ReportData.Rptset = res.data
       }
       else {
 
-        resetTable()
+         resetTable()
       }
     })
 }
@@ -227,6 +246,26 @@ const renderTable = (data) => {
   var displayResourcestap = $("#nav-tab");
   displayResourcestap.html(tap)
 }
+
+const LoadingSpinner = () => {
+  var displayResources = $("#tableContent");
+  const content = `
+   <div class="d-flex justify-content-center mt-5 align-items-center" >
+   <div class="loader"></div>
+   <div class="ml-7">
+   <h1 class="text-muted roboto-condensed-300">Loading ..</h1>
+ </div>
+ </div>
+   `
+  displayResources.html(content)
+
+  var displayResourcestap = $("#nav-tab");
+  var tap = `<div>
+
+  </div>`
+  displayResourcestap.html(tap)
+}
+
 const resetTable = () => {
   var displayResources = $("#tableContent");
   const content = `
@@ -288,7 +327,7 @@ const createTable = (data) => {
     console.log(person_Podok[cj]?.podok?.title)
     tableString += `
     <tr>
-    <td>${person_Podok[cj]?.podok?.title} [${person_Podok[cj]?.created.slice(0, 10)}]</td>   
+    <td>${person_Podok[cj]?.podok?.title} [${person_Podok[cj]?.podokdate.slice(0, 10)}]</td>   
 </tr>`
   }
 
@@ -497,6 +536,11 @@ const createTable = (data) => {
 // reprot  goes here
 
 const uploadReport = () => {
+  var doron = document.getElementById('podok').value
+  if (!doron) {
+    alert('ক্যাটাগরি বাছাই করুন')
+    return
+  }
   var title = document.getElementById(TITLE).value
   var body = document.getElementById(BODY).value
 
@@ -514,9 +558,15 @@ const uploadReport = () => {
 
   formData.append(TITLE, title)
   formData.append(BODY, body)
-
+  formData.append('doron',doron)
 
   var csrfToken = document.cookie.split('=')[1]
+
+  let divenabled = document.getElementById('div-enabled')
+  let divdisabled = document.getElementById('div-disabled')
+
+  addClass(divenabled, 'd-none')
+  removeClass(divdisabled, 'd-none')
 
   axios.post(`${API_URL}/reportAdd`, formData, {
     headers: {
@@ -531,21 +581,26 @@ const uploadReport = () => {
     }
   })
     .then(res => {
-      console.log(res.data)
+   //   console.log(res.data)
       //  console.log(res.data.url)
+      removeClass(divenabled, 'd-none')
+      addClass(divdisabled, 'd-none')
       alert('succefully inserted')
     })
 
 }
 
 
-const searchReportItem = () => {
+const searchReportItem = (catagory) => {
+
   var name = document.getElementById(NAME).value
 
   var csrfToken = document.cookie.split('=')[1]
   var jsonData = {
     title: name,
+    catagory:catagory
   }
+  LoadingSpinner()
   axios.post(`${API_URL}/report_get`,
     jsonData
     , {
@@ -562,8 +617,12 @@ const searchReportItem = () => {
     })
     .then(res => {
       console.log(res.data)
+      if (res.data.length != 0){
       renderReport(res.data)
       ReportData.Rptset = res.data
+      }else{
+        resetTable()
+      }
     })
 }
 
@@ -578,7 +637,8 @@ const ReportData = {
 };
 
 const renderReport = (data) => {
-
+//<a  onclick="fileOpen('${i}')" class="btn btn-primary btn-sm roboto-condensed-300" data-toggle="modal" data-target="#exampleModalCenter">ডকুমেন্ট</a>
+      console.log(data)
   // console.log('renderTable')
   var content = ``
   for (var i in data) {
@@ -590,9 +650,15 @@ const renderReport = (data) => {
          <h5 class="card-title roboto-condensed">${data[i].title}</h5>
            <p class="card-text roboto-condensed-300">${data[i].body.slice(0, 300)}...</p>
           <a  onclick="rendersModal('${i}')" class="btn btn-primary btn-sm roboto-condensed-300 mr-5" data-toggle="modal" data-target="#exampleModalCenter">বিস্তারিত</a>
-          <a  onclick="fileOpen('${i}')" class="btn btn-primary btn-sm roboto-condensed-300" data-toggle="modal" data-target="#exampleModalCenter">ডকুমেন্ট</a>
-        
-       </div>
+            
+          `
+          if(data[i].picture){
+            content+=`<a href="image/download/${data[i].id}" class="btn btn-primary btn-sm roboto-condensed-300"  target="_blank">ডকুমেন্ট</a>
+          `
+          }
+        content+=  `
+             
+              </div>
      </div>
  </li>
  
@@ -704,7 +770,6 @@ const subMenu = (index) => {
 }
 
 showorhideNav = (clue) => {
-  let FULL = 'sidenav'
   let SM = 'sidenavClosed'
 
   const ul = document.getElementById('navHandler')
@@ -782,6 +847,7 @@ const renderVerificationList = (data) => {
     content += `
            <a  onclick="rendersModalVerification('${i}')" class="btn btn-primary btn-sm roboto-condensed-300 mr-5" data-toggle="modal" data-target="#exampleModalCenter">বিস্তারিত</a>
            <a  onclick="rendersModalVerificationupdate('${i}')" class="btn btn-primary btn-sm roboto-condensed-300" data-toggle="modal" data-target="#exampleModalCenter">সম্পাদনা</a>
+           <a  onclick="renderspodokModalVerificationupdate('${i}')" class="btn btn-primary btn-sm roboto-condensed-300" data-toggle="modal" data-target="#exampleModalCenter">পদকের নাম সম্পাদনা</a>
          
         </div>
       </div>
@@ -801,7 +867,7 @@ const renderVerificationList = (data) => {
 
 const renderverificationTable = (data) => {
 
-  const { name, fatherName, motherName, nid, tinNumber, evaluation, professional, personal, political, mamla, person_Podok } = data
+  const { name, fatherName, motherName, nid, tinNumber, person_Podok } = data
   // console.log(professional)
   var tableString = `
     <table class="table table-sm  roboto-condensed-300">
@@ -818,7 +884,7 @@ const renderverificationTable = (data) => {
     console.log(person_Podok[cj]?.podok?.title)
     tableString += `
     <tr>
-    <td>${person_Podok[cj]?.podok?.title} [${person_Podok[cj]?.created.slice(0, 10)}]</td>   
+    <td>${person_Podok[cj]?.podok?.title} [${person_Podok[cj]?.podokdate.slice(0, 10)}]</td>   
 </tr>`
   }
 
@@ -926,18 +992,7 @@ const rendersModalVerificationupdate = (index) => {
         </div>
         <section>
       
-          <div class="card-item-fs bg-light mt-2">
-            <div class="col">
-              <label for="podok" class="form-label col-form-label-sm">পদক বাছাই</label>
-            </div>
-            <div class="col" >
-              <select  class="form-select" name="podokName" id="podokName">
-                <option selected value="">পদক বাছাই করুন</option>
-                
-              </select>
-              
-            </div>
-          </div>
+        
   
         <div class="card-item-fs bg-light mt-2">
           <div class="col">
@@ -1267,6 +1322,81 @@ const rendersModalVerificationupdate = (index) => {
   getPodokName(person_Podok)
 }
 
+const renderspodokModalVerificationupdate = (index) => {
+  var rData = ReportData.Rptget
+  var data = rData[index]
+  const { person_Podok } = data
+
+  let mDl = `
+  <div class="modal  bd-example-modal-lg fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false"> 
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title roboto-condensed" id="exampleModalLongTitle"> ${data.name}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body roboto-condensed-300">
+
+      <div class="shadow-lg p-2">
+      <form  id="financial">
+       
+       
+        <section>
+      
+          <div class="card-item-fs bg-light mt-2">
+            <div class="col">
+              <label for="podok" class="form-label col-form-label-sm">পদক বাছাই</label>
+            </div>
+            <div class="col" >
+              <select  class="form-select" name="podokNameDate" id="podokNameDate">
+                <option selected value="">পদক বাছাই করুন</option>
+                
+              </select>
+              
+            </div>
+          </div>
+          <div class="card-item-fs bg-light mt-2">
+          <div class="col">
+            <label for="formFile" class="form-label col-form-label-sm">পদক গ্রহণের সাল</label>
+          </div>
+          <div class="col">
+            <div class="input-group mb-2">
+              <input type="date" id="podokdate" name="podokdate" placeholder="end" />
+            </div>
+          </div>
+        </div>
+
+        </section>
+     
+  
+       
+      <div class="col mt-3">
+        <a onclick="uploadPodokDate(${index})" class="btn btn-primary roboto-condensed" type="submit">UPDATE</a>
+      </div>
+  
+      </form>
+    </div>
+  
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary roboto-condensed-300" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+  `
+  var displayResources = $("#mdal");
+  //displayResources.html(string)
+  displayResources.html(mDl)
+
+  getPodokNameForDate(person_Podok)
+}
 const getPodokName = (podokList) => {
   axios.get(`${API_URL}/podok_get`,
     {
@@ -1293,7 +1423,36 @@ const getPodokName = (podokList) => {
       var disRs = $("#podokName");
       //displayResources.html(string)
       disRs.append(content)
-    ///  document.getElementById('podokName').value = podokList[0]?.podok?.id
+      ///  document.getElementById('podokName').value = podokList[0]?.podok?.id
+    })
+}
+const getPodokNameForDate = (podokList) => {
+  axios.get(`${API_URL}/podok_get`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        // "X-CSRFToken": csrfToken
+      },
+      onUploadProgress: progressEvent => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        console.log(`upload process: ${percentCompleted}%`);
+      }
+    })
+    .then(res => {
+      console.log(res.data, podokList)
+      var data = res.data
+      var content = ``
+      for (let i in data) {
+        content += `
+      <option value="${data[i].id}">${data[i].title}</option>
+      `
+      }
+      var disRs = $("#podokNameDate");
+      //displayResources.html(string)
+      disRs.append(content)
+      ///  document.getElementById('podokName').value = podokList[0]?.podok?.id
     })
 }
 var i = 0
@@ -1301,7 +1460,6 @@ var infoList = ['Info', "Parsonal", "Professional", "Political", "Mamla", "Evalu
 
 const initializeForm = () => {
   var backButton = document.getElementById("back");
-  var nextButton = document.getElementById("next");
   var number = document.getElementById("number");
 
 
@@ -1374,7 +1532,7 @@ const uploadUpdate = (index) => {
   var data = rData[index]
   console.log(data)
 
-  var podok = document.getElementById('podokName').value
+  // var podok = document.getElementById('podokName').value
 
 
 
@@ -1431,7 +1589,7 @@ const uploadUpdate = (index) => {
   else
     formData.append('picture', null);
 
-  formData.append('podok', podok);
+  // formData.append('podok', podok);
   formData.append('name', name);
   formData.append('fatherName', fatherName);
   formData.append('motherName', motherName);
@@ -1487,9 +1645,9 @@ const uploadUpdate = (index) => {
   formData.append('personalId', data.personal[0]?.id)
   formData.append('politicalId', data.political[0]?.id)
   formData.append('professionalId', data.professional[0]?.id)
-  // console.log(data.political)
+  console.log(data.political)
   var csrfToken = document.cookie.split('=')[1]
-  // console.log(csrfToken, formData.getAll('picture'))
+  console.log(csrfToken, formData.getAll('picture'))
 
   axios.put(`${API_URL}/personAdd`, formData, {
     headers: {
@@ -1504,16 +1662,99 @@ const uploadUpdate = (index) => {
     }
   })
     .then(res => {
-      // console.log(res.data)
+      console.log(res.data)
       $('#exampleModalCenter').modal('toggle')
       delayManage()
 
     })
 }
 
+const uploadPodokDate = (index) => {
+
+  var rData = ReportData.Rptget
+  var data = rData[index]
+
+
+  var podok = document.getElementById('podokNameDate').value
+  var podokdate = document.getElementById('podokdate').value
+
+  if (!podok) {
+    alert('পদক বাছাই করুন')
+    return
+  }
+
+  if (!podokdate) {
+    alert('পদকের সাল বাছাই করুন')
+    return
+  }
+
+  let formData = new FormData();
+
+
+  // assign id
+  formData.append('podok', podok)
+  formData.append('podokdate', podokdate)
+  formData.append('id', data.id)
+
+
+  var csrfToken = document.cookie.split('=')[1]
+
+  axios.post(`${API_URL}/podokAdd`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "X-CSRFToken": csrfToken
+    },
+    onUploadProgress: progressEvent => {
+      const percentCompleted = Math.round(
+        (progressEvent.loaded * 100) / progressEvent.total
+      );
+      console.log(`upload process: ${percentCompleted}%`);
+    }
+  })
+    .then(res => {
+      console.log(res.data)
+      $('#exampleModalCenter').modal('toggle')
+      delayManage()
+
+    })
+}
 const delayManage = () => {
   var delayInMilliseconds = 1000; //1 second
   setTimeout(function () {
     searchItem()
   }, delayInMilliseconds);
+}
+
+const deletePodok = (idx) => {
+
+  var jsonData = {
+    id: parseInt(idx),
+  }
+  var csrfToken = document.cookie.split('=')[1]
+  axios.post(`${API_URL}/podok_get`,
+    jsonData
+    , {
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken
+      },
+      onUploadProgress: progressEvent => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        console.log(`upload process: ${percentCompleted}%`);
+      }
+    })
+    .then(res => {
+      console.log(res.data)
+      if(res.data.del==true){
+        let doc = document.getElementById(`podok-${idx}`)
+        // console.log(doc)
+        addClass(doc, 'd-none')
+        alert(res.data.mess)
+      }else{
+        alert(res.data.mess)
+      }
+     
+    })
 }
