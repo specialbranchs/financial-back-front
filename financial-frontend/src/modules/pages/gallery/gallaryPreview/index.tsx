@@ -48,7 +48,7 @@ const GallaryPreviewScreen = () => {
       )
       .subscribe({
         next: async (report) => {
-          console.log("user", report);
+         
           setEvent(report);
           setLoading(false);
         },
